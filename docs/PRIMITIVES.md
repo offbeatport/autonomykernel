@@ -4,7 +4,7 @@ _The nouns of the kernel: the objects it knows by name, and the two chains that 
 
 Vlad Palos · May 2026 · [Contribute on GitHub](https://github.com/offbeatport/autonomykernel)
 
-[← The Agent Kernel Hypothesis](HYPOTHESIS.md)
+[← The Autonomy Kernel Hypothesis](HYPOTHESIS.md)
 
 ---
 

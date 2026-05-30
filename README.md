@@ -8,11 +8,9 @@
 
 ## Documents
 
-- [The Agent Kernel Hypothesis](docs/HYPOTHESIS.md): the worldview and the boundary to build on.
+- [The Autonomy Kernel Hypothesis](docs/HYPOTHESIS.md): the worldview and the boundary to build on.
 - [Core Primitives](docs/PRIMITIVES.md): the objects the kernel governs and the two chains that bind them.
 
-## Contributing
+## Contribute: help shape this
 
-This is early and open by design. Open an [issue](https://github.com/offbeatport/autonomykernel/issues) to argue with a claim, or a pull request to sharpen the text.
-
-Vlad Palos · May 2026
+There's no code yet, just the design. Open an [issue](https://github.com/offbeatport/autonomykernel/issues) to challenge a claim or a PR to improve the wording.

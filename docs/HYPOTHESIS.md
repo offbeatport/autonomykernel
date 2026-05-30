@@ -1,4 +1,4 @@
-# The Agent Kernel Hypothesis
+# The Autonomy Kernel Hypothesis
 
 _An operating system for autonomous work: a worldview to weigh, and a boundary to build on._
 
@@ -10,7 +10,7 @@ _A proposed standard and a call for collaborators. There is no kernel yet; this 
 
 ## The Substrate
 
-Autonomous agents today are created by a prompt and discarded at the end of the session. But we increasingly ask them to hold real authority and act on our behalf for days rather than seconds, and there is no shared layer underneath them that governs what an agent may do, records what it did, retains what it learned, and can stop it on demand. An agent kernel would be that layer: a runtime beneath the agents and the models they reason with. Agents are disposable and models are replaceable; the layer beneath them should be neither.
+Autonomous agents today are created by a prompt and discarded at the end of the session. But we increasingly ask them to hold real authority and act on our behalf for days rather than seconds, and there is no shared layer underneath them that governs what an agent may do, records what it did, retains what it learned, and can stop it on demand. An autonomy kernel would be that layer: a runtime beneath the agents and the models they reason with. Agents are disposable and models are replaceable; the layer beneath them should be neither.
 
 Underneath that runtime is one organizing idea: authority has a single root, the principal. Every agent, every action, every grant of power traces back to a principal who authorized it and answers for it. Purpose descends one chain (principal to intent, goal, task, process, action) and power descends another (principal to policy, capability, lease, syscall), and the two meet at a single gate before any action runs. That authority model is the part most agent tooling skips, and it is the core of what this proposes.
 
@@ -130,7 +130,7 @@ A standard is only credible if it commits to things it can be measured against. 
 
 **"Build for decades" reduces to falsifiable constraints.** The claim rests on three things you can hold the project to: a versioned, backward-compatible contract; no dependence on any single model or vendor, the foundation's own included; and durable state in open, exportable formats. A foundation like this succeeds when it becomes unremarkable enough to ignore, when the work above it assumes it is there and stops thinking about it.
 
-The pattern is not new. Operating systems made software portable across machines; processes made computation governable; files made data durable; permissions made multi-user systems possible. An agent kernel is the next step: making autonomous work portable across models, organizations, and time, and governable by the principals it serves. The need is not more capable sessions; it is durable runtime semantics for autonomous work.
+The pattern is not new. Operating systems made software portable across machines; processes made computation governable; files made data durable; permissions made multi-user systems possible. An autonomy kernel is the next step: making autonomous work portable across models, organizations, and time, and governable by the principals it serves. The need is not more capable sessions; it is durable runtime semantics for autonomous work.
 
 The goal is not to make agents seem alive. It is to make them safe to run.
 
