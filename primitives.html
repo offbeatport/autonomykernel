@@ -4,14 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <title>Core Primitives &mdash; The Agent Kernel</title>
+    <title>Core Primitives · The Agent Kernel</title>
     <meta
       name="description"
       content="The nouns of the kernel: the objects it knows by name, the hierarchy of purpose, the authority chain, and the execution rule."
     />
 
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Core Primitives — The Agent Kernel" />
+    <meta property="og:title" content="Core Primitives · The Agent Kernel" />
     <meta
       property="og:description"
       content="The objects the kernel knows by name, the hierarchy of purpose, the authority chain, and the execution rule."
@@ -21,7 +21,7 @@
       content="https://autonomykernel.org/primitives.html"
     />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Core Primitives — The Agent Kernel" />
+    <meta name="twitter:title" content="Core Primitives · The Agent Kernel" />
     <meta
       name="twitter:description"
       content="The objects the kernel knows by name, the hierarchy of purpose, the authority chain, and the execution rule."
@@ -67,7 +67,7 @@
           sans-serif;
         --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-        --measure: 46rem;
+        --measure: 54rem;
       }
 
       *,
@@ -106,24 +106,37 @@
         padding-block: clamp(3rem, 9vh, 6rem) clamp(2.2rem, 6vw, 3.6rem);
       }
       .eyebrow {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.5rem 1.4rem;
         font-size: 0.74rem;
-        letter-spacing: 0.22em;
+        letter-spacing: 0.18em;
         text-transform: uppercase;
         color: var(--muted);
         margin: 0 0 clamp(1.6rem, 5vw, 2.6rem);
       }
-      .eyebrow a {
+      .eyebrow .brand {
         color: var(--muted);
         text-decoration: none;
       }
-      .eyebrow a:hover {
+      .eyebrow .dot {
         color: var(--accent);
       }
-      .eyebrow .sep {
-        color: var(--hair);
-        margin-inline: 0.6em;
+      .eyebrow .navlinks {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.2rem;
+        margin-left: auto;
       }
-      .eyebrow .here {
+      .eyebrow .navlinks a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .eyebrow .navlinks a:hover {
+        color: var(--accent);
+      }
+      .eyebrow .navlinks a[aria-current="page"] {
         color: var(--ink);
       }
 
@@ -189,7 +202,7 @@
       .row {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 0.12rem;
+        gap: 0.18rem;
         padding-block: 0.95rem;
         border-top: 1px solid var(--hair);
       }
@@ -209,12 +222,38 @@
         font-style: italic;
         color: var(--ink);
       }
+      .ex {
+        color: var(--muted);
+        font-size: 0.92em;
+      }
+      .ex code {
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
 
-      @media (min-width: 42rem) {
+      /* header row, hidden until the table goes multi-column */
+      .row.head {
+        display: none;
+        border-top: 0;
+        padding-block: 0 0.55rem;
+      }
+      .hl {
+        font-family: var(--display);
+        font-weight: 500;
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      @media (min-width: 50rem) {
         .row {
-          grid-template-columns: 12rem 1fr;
-          column-gap: 1.6rem;
+          grid-template-columns: 9rem minmax(0, 1fr) minmax(0, 0.92fr);
+          column-gap: 1.5rem;
           align-items: baseline;
+        }
+        .row.head {
+          display: grid;
         }
       }
 
@@ -304,6 +343,11 @@
       footer a:hover {
         color: var(--accent);
       }
+      footer nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem 1.2rem;
+      }
 
       @media (prefers-reduced-motion: no-preference) {
         .masthead > * {
@@ -335,10 +379,16 @@
   <body>
     <div class="wrap">
       <header class="masthead">
-        <p class="eyebrow">
-          <a href="index.html">autonomykernel.org</a><span class="sep">/</span
-          ><span class="here">Primitives</span>
-        </p>
+        <nav class="eyebrow" aria-label="Primary">
+          <a class="brand" href="index.html"
+            >autonomykernel<span class="dot">.</span>org</a
+          >
+          <span class="navlinks">
+            <a href="index.html">Hypothesis</a>
+            <a href="primitives.html" aria-current="page">Primitives</a>
+            <a href="https://github.com/offbeatport/autonomykernel">GitHub</a>
+          </span>
+        </nav>
         <h1>Core Primitives</h1>
         <p class="subtitle">
           The nouns of the kernel: the objects it knows by name, and the two
@@ -356,20 +406,30 @@
           </p>
 
           <div class="ledger">
+            <div class="row head">
+              <span class="hl">Primitive</span><span class="hl">Definition</span
+              ><span class="hl">Example</span>
+            </div>
             <div class="row">
               <span class="pr">Principal</span
               ><span class="df"
                 >Root owner of authority, memory, budgets, agents, intents, and
                 policies. Can represent a person, team, company, service, or
                 autonomous collective.</span
+              ><span class="ex"
+                >The user <code>vlad</code>, the <code>acme-corp</code> org, or a
+                <code>billing-bot</code> service account</span
               >
             </div>
             <div class="row">
               <span class="pr">Identity</span
               ><span class="df"
-                >Stable identifier for a principal, agent, process, tool,
-                memory, or object. Survives restarts, upgrades, migrations, and
-                model changes.</span
+                >Stable identifier for a principal, agent, process, tool, memory,
+                or object. Survives restarts, upgrades, migrations, and model
+                changes.</span
+              ><span class="ex"
+                ><code>agent://acme/refund-bot/3f9a</code>, the same ID after a
+                redeploy</span
               >
             </div>
             <div class="row">
@@ -377,13 +437,18 @@
               ><span class="df"
                 >Isolation boundary for names, objects, permissions, and
                 resources. Prevents collisions and enables multi-tenancy.</span
+              ><span class="ex"
+                ><code>acme/prod</code> kept isolated from
+                <code>acme/staging</code></span
               >
             </div>
             <div class="row">
               <span class="pr">Intent</span
               ><span class="df"
-                >Long-lived purpose. Answers:
-                <em>why are we doing this?</em> Not directly executable.</span
+                >Long-lived purpose. Answers: <em>why are we doing this?</em> Not
+                directly executable.</span
+              ><span class="ex"
+                >“Keep customer refunds under a 24-hour turnaround”</span
               >
             </div>
             <div class="row">
@@ -391,13 +456,15 @@
               ><span class="df"
                 >Measurable outcome derived from an intent. Answers:
                 <em>what must be achieved?</em></span
-              >
+              ><span class="ex">“Resolve ticket #8821 within its SLA”</span>
             </div>
             <div class="row">
               <span class="pr">Task</span
               ><span class="df"
                 >Executable unit of work derived from a goal. Answers:
                 <em>what work should happen?</em></span
+              ><span class="ex"
+                >“Draft and send the refund confirmation for #8821”</span
               >
             </div>
             <div class="row">
@@ -405,63 +472,65 @@
               ><span class="df"
                 >Running execution context for a task. Can start, pause, sleep,
                 checkpoint, resume, crash, recover, or terminate.</span
+              ><span class="ex"
+                ><code>p-7742</code>, paused at a checkpoint, awaiting
+                approval</span
               >
             </div>
             <div class="row">
               <span class="pr">Action</span
               ><span class="df"
-                >Atomic operation attempted by a process. Example: read file,
-                send email, call API.</span
-              >
+                >Atomic operation attempted by a process.</span
+              ><span class="ex">read a file, send an email, call an API</span>
             </div>
             <div class="row">
               <span class="pr">Agent</span
               ><span class="df"
                 >Autonomous worker that reasons, plans, and requests actions.
                 Agents are disposable; the system is durable.</span
-              >
+              ><span class="ex">a Claude- or GPT-backed refund assistant</span>
             </div>
             <div class="row">
               <span class="pr">Capability</span
-              ><span class="df"
-                >Explicit permission to do something. Example:
-                <code>email.send</code>, <code>filesystem.write</code>,
-                <code>browser.navigate</code>.</span
+              ><span class="df">Explicit permission to do something.</span
+              ><span class="ex"
+                ><code>email.send</code>, <code>filesystem.write</code>,
+                <code>browser.navigate</code></span
               >
             </div>
             <div class="row">
               <span class="pr">Policy</span
-              ><span class="df"
-                >Rule that constrains authority. Example: &ldquo;require
-                approval before emailing external contacts.&rdquo;</span
+              ><span class="df">Rule that constrains authority.</span
+              ><span class="ex"
+                >“Require human approval before emailing external contacts”</span
               >
             </div>
             <div class="row">
               <span class="pr">Lease</span
-              ><span class="df"
-                >Temporary, scoped authority. Example: &ldquo;may send 20 emails
-                in the next hour.&rdquo;</span
-              >
+              ><span class="df">Temporary, scoped authority.</span
+              ><span class="ex">“May send 20 emails in the next hour”</span>
             </div>
             <div class="row">
               <span class="pr">Budget</span
               ><span class="df"
                 >Resource limit. Tracks tokens, money, time, API calls, compute,
                 risk, or tool usage.</span
-              >
+              ><span class="ex">$5.00 and 100k tokens for one task</span>
             </div>
             <div class="row">
               <span class="pr">Approval</span
               ><span class="df"
                 >Human or supervisory authorization gate. Lifecycle: pending,
                 approved, denied, expired.</span
-              >
+              ><span class="ex">a manager approves a refund over $500</span>
             </div>
             <div class="row">
               <span class="pr">Syscall</span
               ><span class="df"
-                >Controlled boundary between agent space and kernel space.
-                Agents request actions; the kernel validates and executes.</span
+                >Controlled boundary between agent space and kernel space. Agents
+                request actions; the kernel validates and executes.</span
+              ><span class="ex"
+                ><code>email.send(to, body)</code>, checked then executed</span
               >
             </div>
             <div class="row">
@@ -469,6 +538,9 @@
               ><span class="df"
                 >Immutable fact that something happened. Events drive the
                 system.</span
+              ><span class="ex"
+                ><code>approval.granted</code>,
+                <code>process.checkpointed</code></span
               >
             </div>
             <div class="row">
@@ -476,6 +548,8 @@
               ><span class="df"
                 >Communication between users, agents, processes, plugins, or the
                 kernel.</span
+              ><span class="ex"
+                >agent to human: “Need sign-off on refund #8821”</span
               >
             </div>
             <div class="row">
@@ -483,20 +557,26 @@
               ><span class="df"
                 >Persistent knowledge and experience. Should be pluggable, but
                 referenced by kernel objects.</span
-              >
+              ><span class="ex">“This customer prefers email over phone”</span>
             </div>
             <div class="row">
               <span class="pr">Provenance</span
               ><span class="df"
                 >Lineage of data, memory, decisions, and actions. Answers:
                 <em>where did this come from?</em></span
+              ><span class="ex"
+                >figure pulled from the Q3 export by process
+                <code>p-7742</code></span
               >
             </div>
             <div class="row">
               <span class="pr">Version</span
               ><span class="df"
-                >Immutable revision of an object, policy, prompt, plugin,
-                memory, or agent definition. Required for replay.</span
+                >Immutable revision of an object, policy, prompt, plugin, memory,
+                or agent definition. Required for replay.</span
+              ><span class="ex"
+                ><code>policy@v4</code>, <code>prompt@v12</code>, pinned for
+                replay</span
               >
             </div>
             <div class="row">
@@ -505,13 +585,16 @@
                 >Append-only record of all state transitions, decisions,
                 permissions, syscalls, actions, approvals, and memory
                 mutations.</span
+              ><span class="ex"
+                ><code>principal=vlad action=email.send result=allowed</code></span
               >
             </div>
             <div class="row">
               <span class="pr">Plugin</span
               ><span class="df"
-                >Replaceable subsystem implementing kernel contracts. Examples:
-                scheduler, memory, model, storage, sandbox, evaluator.</span
+                >Replaceable subsystem implementing kernel contracts.</span
+              ><span class="ex"
+                >swap the Postgres audit store for S3, or the scheduler</span
               >
             </div>
           </div>
@@ -530,32 +613,32 @@
             <div>
               <p class="sub">Main hierarchy</p>
               <ol class="chain">
-                <li style="--d: 0">Principal</li>
-                <li style="--d: 1">Intent</li>
-                <li style="--d: 2">Goal</li>
-                <li style="--d: 3">Task</li>
-                <li style="--d: 4">Process</li>
-                <li style="--d: 5">Action</li>
-                <li style="--d: 6">Syscall</li>
+                <li style="--d:0">Principal</li>
+                <li style="--d:1">Intent</li>
+                <li style="--d:2">Goal</li>
+                <li style="--d:3">Task</li>
+                <li style="--d:4">Process</li>
+                <li style="--d:5">Action</li>
+                <li style="--d:6">Syscall</li>
               </ol>
             </div>
             <div>
               <p class="sub">Authority chain</p>
               <ol class="chain">
-                <li style="--d: 0">Principal</li>
-                <li style="--d: 1">Policy</li>
-                <li style="--d: 2">Capability</li>
-                <li style="--d: 3">Lease</li>
-                <li style="--d: 4">Budget</li>
-                <li style="--d: 5">Approval</li>
-                <li style="--d: 6">Syscall</li>
+                <li style="--d:0">Principal</li>
+                <li style="--d:1">Policy</li>
+                <li style="--d:2">Capability</li>
+                <li style="--d:3">Lease</li>
+                <li style="--d:4">Budget</li>
+                <li style="--d:5">Approval</li>
+                <li style="--d:6">Syscall</li>
               </ol>
             </div>
           </div>
           <p class="converge">
             Both chains start at the principal and narrow, step by step, until
-            they meet at the syscall &mdash; the single gate where intent and
-            authority are checked together before any action executes.
+            they meet at the syscall: the single gate where intent and authority
+            are checked together before any action executes.
           </p>
         </section>
 
@@ -574,8 +657,11 @@
       </main>
 
       <footer>
-        <span>autonomykernel.org</span>
-        <nav><a href="index.html">&larr; The Hypothesis</a></nav>
+        <span>autonomykernel.org · Vlad Palos · May 2026</span>
+        <nav>
+          <a href="https://github.com/offbeatport/autonomykernel">GitHub</a>
+          <a href="index.html">← The Hypothesis</a>
+        </nav>
       </footer>
     </div>
   </body>

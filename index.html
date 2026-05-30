@@ -10,7 +10,6 @@
       content="An operating system for autonomous work: a worldview to weigh, and a boundary to build on."
     />
 
-    <!-- Social previews. Add an og:image (1200x630) before wide sharing. -->
     <meta property="og:type" content="article" />
     <meta property="og:title" content="The Agent Kernel Hypothesis" />
     <meta
@@ -64,7 +63,7 @@
           "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
           sans-serif;
 
-        --measure: 44rem;
+        --measure: 54rem;
       }
 
       *,
@@ -105,14 +104,38 @@
         padding-block: clamp(4rem, 13vh, 9rem) clamp(2.4rem, 6vw, 4rem);
       }
       .eyebrow {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.5rem 1.4rem;
         font-size: 0.74rem;
-        letter-spacing: 0.22em;
+        letter-spacing: 0.18em;
         text-transform: uppercase;
         color: var(--muted);
         margin: 0 0 clamp(1.6rem, 5vw, 2.8rem);
       }
+      .eyebrow .brand {
+        color: var(--muted);
+        text-decoration: none;
+      }
       .eyebrow .dot {
         color: var(--accent);
+      }
+      .eyebrow .navlinks {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.2rem;
+        margin-left: auto;
+      }
+      .eyebrow .navlinks a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .eyebrow .navlinks a:hover {
+        color: var(--accent);
+      }
+      .eyebrow .navlinks a[aria-current="page"] {
+        color: var(--ink);
       }
 
       h1 {
@@ -134,6 +157,28 @@
         line-height: 1.45;
         max-width: 36ch;
         margin: clamp(1.4rem, 3vw, 2rem) 0 0;
+      }
+
+      .byline {
+        margin: clamp(1.3rem, 3vw, 1.8rem) 0 0;
+        font-size: 0.82rem;
+        letter-spacing: 0.03em;
+        color: var(--muted);
+      }
+      .byline a {
+        color: var(--muted);
+        text-underline-offset: 0.16em;
+      }
+      .byline a:hover {
+        color: var(--accent);
+      }
+      .note {
+        margin: 0.9rem 0 0;
+        font-style: italic;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: var(--muted);
+        max-width: 48ch;
       }
 
       /* ---------- Sections ---------- */
@@ -299,6 +344,19 @@
         margin: clamp(2rem, 5vw, 3.4rem) 0 0;
       }
 
+      /* ---------- Envoi ---------- */
+      .envoi {
+        margin: clamp(2.4rem, 6vw, 3.6rem) 0 0;
+        padding-top: clamp(2rem, 5vw, 2.8rem);
+        border-top: 1px solid var(--hair);
+        font-family: var(--display);
+        font-weight: 300;
+        font-size: clamp(1.35rem, 1rem + 1.5vw, 2rem);
+        line-height: 1.3;
+        letter-spacing: -0.015em;
+        color: var(--ink);
+      }
+
       /* ---------- Footer ---------- */
       footer {
         margin-top: clamp(3rem, 8vw, 5.5rem);
@@ -319,6 +377,11 @@
       footer a:hover {
         color: var(--accent);
       }
+      footer nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem 1.2rem;
+      }
 
       /* ---------- Wider screens: hang the tenet numerals into the gutter ---------- */
       @media (min-width: 56rem) {
@@ -329,6 +392,11 @@
         }
         .tenet h3 .rn {
           text-align: right;
+        }
+        .tenet h3 {
+          grid-template-columns: 2.4rem 1fr;
+        }
+        .tenet .body-cell {
         }
       }
 
@@ -362,6 +430,9 @@
         .masthead .subtitle {
           animation-delay: 0.22s;
         }
+        .masthead .byline {
+          animation-delay: 0.32s;
+        }
         @keyframes rise {
           from {
             opacity: 0;
@@ -379,11 +450,30 @@
   <body>
     <div class="wrap">
       <header class="masthead">
-        <p class="eyebrow">autonomykernel<span class="dot">.</span>org</p>
+        <nav class="eyebrow" aria-label="Primary">
+          <a class="brand" href="index.html"
+            >autonomykernel<span class="dot">.</span>org</a
+          >
+          <span class="navlinks">
+            <a href="index.html" aria-current="page">Hypothesis</a>
+            <a href="primitives.html">Primitives</a>
+            <a href="https://github.com/offbeatport/autonomykernel">GitHub</a>
+          </span>
+        </nav>
         <h1>The Agent Kernel Hypothesis</h1>
         <p class="subtitle">
           An operating system for autonomous work: a worldview to weigh, and a
           boundary to build on.
+        </p>
+        <p class="byline">
+          Vlad Palos · May 2026 ·
+          <a href="https://github.com/offbeatport/autonomykernel"
+            >github.com/offbeatport/autonomykernel</a
+          >
+        </p>
+        <p class="note">
+          A proposed standard and a call for collaborators. There is no kernel
+          yet; this document argues for building one.
         </p>
       </header>
 
@@ -397,10 +487,21 @@
             end of the session. But we increasingly ask them to hold real
             authority and act on our behalf for days rather than seconds, and
             there is no shared layer underneath them that governs what an agent
-            may do, records what it did, retains what it learned, and can stop it
-            on demand. Agent Kernel is that layer: a runtime beneath the agents
-            and the models they reason with. Agents are disposable and models are
-            replaceable; the layer beneath them should be neither.
+            may do, records what it did, retains what it learned, and can stop
+            it on demand. An agent kernel would be that layer: a runtime beneath
+            the agents and the models they reason with. Agents are disposable
+            and models are replaceable; the layer beneath them should be
+            neither.
+          </p>
+          <p>
+            Underneath that runtime is one organizing idea: authority has a
+            single root, the principal. Every agent, every action, every grant
+            of power traces back to a principal who authorized it and answers
+            for it. Purpose descends one chain (principal to intent, goal, task,
+            process, action) and power descends another (principal to policy,
+            capability, lease, syscall), and the two meet at a single gate
+            before any action runs. That authority model is the part most agent
+            tooling skips, and it is the core of what this proposes.
           </p>
         </section>
 
@@ -412,7 +513,9 @@
             <div class="row">
               <span class="rn">I</span
               ><span class="pr">Agents are processes</span
-              ><span class="gl">named, observed, accountable units of work</span>
+              ><span class="gl"
+                >named, observed, accountable units of work</span
+              >
             </div>
             <div class="row">
               <span class="rn">II</span
@@ -424,14 +527,14 @@
             <div class="row">
               <span class="rn">III</span
               ><span class="pr">Models are replaceable</span
-              ><span class="gl"
-                >and so is the kernel&rsquo;s own implementation</span
-              >
+              ><span class="gl">and so is the kernel’s own implementation</span>
             </div>
             <div class="row">
               <span class="rn">IV</span
               ><span class="pr">Intent must be traceable</span
-              ><span class="gl">every action links to an authorizing reason</span>
+              ><span class="gl"
+                >every action links to an authorizing reason</span
+              >
             </div>
             <div class="row">
               <span class="rn">V</span
@@ -449,7 +552,7 @@
               <span class="rn">VII</span
               ><span class="pr">The principal is sovereign</span
               ><span class="gl"
-                >every grant is revocable, including mid-action</span
+                >the root of all authority; every grant is revocable</span
               >
             </div>
             <div class="row">
@@ -477,7 +580,6 @@
               ><span class="gl">a principal always answers for the action</span>
             </div>
           </div>
-          <p class="caption">Each principle is stated here and argued below.</p>
         </section>
 
         <hr class="rule" />
@@ -488,39 +590,39 @@
             The operating system kernel solved a specific problem: every program
             spoke to the hardware in its own way, reimplemented the same
             primitives, and failed in its own way. The kernel was the layer
-            between hardware and software that made the rest possible &mdash; not
-            by being clever, but by being the part nothing else had to
-            reimplement. It defined an interface and held it stable.
+            between hardware and software that made the rest possible. It
+            defined an interface, held it stable, and became the part nothing
+            else had to reimplement.
           </p>
           <p>
             Autonomous agents are at a similar point. Agents sit above, models
-            below, and between them is mostly glue code and convention. The shift
-            underway is from prompts and sessions to long-lived processes: work
-            that persists and can be named, paused, inspected, and audited. That
-            shift needs a defined layer to run on.
+            below, and between them is mostly glue code and convention. The
+            shift underway is from prompts and sessions to long-lived processes:
+            work that persists and can be named, paused, inspected, and audited.
+            That shift needs a defined layer to run on.
           </p>
           <p>
             Three layers, then: the agent is a process; the model is the
             reasoning engine inside it; the kernel is the runtime beneath both.
             The model is the most capable layer and the least permanent. The
-            kernel changes slowly. The ordering is by endurance, not importance
-            &mdash; what reasons is replaceable, what governs is not.
+            kernel changes slowly. The ordering here is by endurance rather than
+            importance: what reasons gets replaced, what governs persists.
           </p>
           <p>
-            This is a layer beneath existing tools, not a replacement for them.
-            Frameworks, assistants, workflow tools, and the models themselves are
-            userspace, where the work happens. The kernel&rsquo;s role is to be
-            the part none of them has to reimplement and the part none of them can
-            quietly break. Today&rsquo;s tools are the first things that would run
-            on it, not obstacles to it.
+            This layer sits beneath existing tools rather than replacing them.
+            Frameworks, assistants, workflow tools, and the models themselves
+            are userspace, where the work happens. The kernel’s role is to be
+            the part none of them has to reimplement and the part none of them
+            can quietly break. Today’s tools would be the first things to run on
+            it.
           </p>
           <p>
             This document has two parts, and it keeps them separate. Part I is a
             worldview: an opinionated account of what autonomous systems are and
-            how they should behave, which you can accept or argue with. Part II is
-            a boundary: a contract you can build against even if you reject the
-            worldview entirely. A standard requires agreement about interfaces,
-            not about meaning.
+            how they should behave, which you can accept or argue with. Part II
+            is a boundary: a contract you can build against even if you reject
+            the worldview entirely. A standard requires agreement about
+            interfaces, not about meaning.
           </p>
         </section>
 
@@ -542,19 +644,20 @@
             </h3>
             <p>
               An agent is a process: a unit of work with a beginning, a
-              lifecycle, state, and an end. This is a logical abstraction, like a
-              database transaction or an account &mdash; not a scheduler PID. The
-              point is that a process can be named, listed, paused, resumed, and
-              inspected while it runs, by something other than itself.
+              lifecycle, state, and an end. This is a logical abstraction, like
+              a database transaction or an account, rather than a number in a
+              scheduler. The point is that a process can be named, listed,
+              paused, resumed, and inspected while it runs, by something other
+              than itself.
             </p>
             <p>
-              The alternative is to grant authority to something you can&rsquo;t
-              name, inspect, or hold to account. A process you can observe is a
-              process you can govern, and only what can be governed can be trusted
-              with anything that matters. Everything below depends on there being
-              a named entity for the rest to attach to: the kernel has to know
-              what is running, why, on whose behalf, what it may do, what it has
-              done, and when it must stop.
+              The alternative is to grant authority to something you can’t name,
+              inspect, or hold to account. A process you can observe is a
+              process you can govern, and only what can be governed can be
+              trusted with anything that matters. Everything below depends on
+              there being a named entity for the rest to attach to: the kernel
+              has to know what is running, why, on whose behalf, what it may do,
+              what it has done, and when it must stop.
             </p>
           </article>
 
@@ -568,17 +671,17 @@
             </h3>
             <p>
               If an agent is a process, any single instance is expendable. The
-              agent is the unit of execution, not the unit of meaning. Continuity
-              does not live in the instance: what has to survive &mdash; intent,
-              authority, memory, the record &mdash; belongs to the system, not to
-              the worker that happened to hold it.
+              agent is the unit of execution rather than the unit of meaning.
+              Continuity does not live in the instance: what has to survive
+              (intent, authority, memory, the record) belongs to the system, not
+              to the worker that happened to hold it.
             </p>
             <p>
-              This is a design choice, not a value judgment. A system that
-              can&rsquo;t survive the loss of any single worker is fragile by
-              construction. Treating instances as disposable buys the freedom to
-              kill, restart, fork, and replace a running agent without losing what
-              the work was for.
+              This is an engineering decision rather than a comment on worth. A
+              system that can’t survive the loss of any single worker is fragile
+              by construction. Treating instances as disposable buys the freedom
+              to kill, restart, fork, and replace a running agent without losing
+              what the work was for.
             </p>
           </article>
 
@@ -592,19 +695,19 @@
             <p>
               The model is the reasoning engine, and engines get swapped and
               retired. Build directly on a model and you inherit its shelf life:
-              when it is deprecated, so is your stack, and the vendor&rsquo;s
-              roadmap becomes yours. Build on a kernel and the model becomes a
-              component &mdash; the most capable one, but a replaceable one behind
-              a stable interface. An agent should be able to change the model it
-              reasons with without changing what it is, what it may do, or what it
-              owes.
+              when it is deprecated, so is your stack, and the vendor’s roadmap
+              becomes yours. Build on a kernel and the model becomes a
+              component: the most capable component, but a replaceable one
+              behind a stable interface. An agent should be able to change the
+              model it reasons with without changing what it is, what it may do,
+              or what it owes.
             </p>
             <p>
               The same logic applies one layer down. It is not enough for models
               to be replaceable if the layer beneath them is locked: no single
               implementation of the kernel, and no single vendor of it, should
-              become the next thing you can&rsquo;t leave. The boundary itself has
-              to be open and portable. What that requires is the subject of Part
+              become the next thing you can’t leave. The boundary itself has to
+              be open and portable. What that requires is the subject of Part
               II.
             </p>
           </article>
@@ -618,23 +721,22 @@
               >
             </h3>
             <p>
-              Every action must trace to an authorizing principal and a reason it
-              was permitted. The requirement is not that intent be elaborate, only
-              that it be present and followable. An action with no recoverable
-              reason is a defect regardless of its result; as execution gets
-              cheaper, unaccountable automation mostly produces volume.
+              Every action must trace to an authorizing principal and a reason
+              it was permitted. The requirement is not that intent be elaborate,
+              only that it be present and followable. An action with no
+              recoverable reason is a defect regardless of its result; as
+              execution gets cheaper, unaccountable automation mostly produces
+              volume.
             </p>
             <p>
-              The kernel&rsquo;s responsibility here is <strong>lineage</strong>:
-              an unbroken link from an action back to who authorized it and why,
+              The kernel’s responsibility here is <strong>lineage</strong>: an
+              unbroken link from an action back to who authorized it and why,
               enforced where execution, identity, and auditing meet. The kernel
               does not own the meaning. One reference decomposition,
-              <em
-                >Principal &rarr; Intent &rarr; Goal &rarr; Task &rarr; Process
-                &rarr; Action</em
-              >, is a useful map of the path from reason to deed, not a required
-              one. How richly intent is modeled is a userspace concern;
-              <em>that</em> it is traceable is not.
+              <em>Principal → Intent → Goal → Task → Process → Action</em>, is a
+              useful map of the path from reason to deed, and only one of
+              several possible. How richly intent is modeled is a userspace
+              concern; <em>that</em> it is traceable at all is not.
             </p>
           </article>
 
@@ -649,22 +751,22 @@
             <p>
               The default is deny. Authority is never assumed, inherited by
               proximity, or earned by good behavior; it is granted explicitly,
-              scoped, leased, and set to expire. Trust and authority are separate:
-              an agent can be trusted completely and still permitted nothing.
-              Authority that can&rsquo;t be traced to a grant should be treated as
-              a vulnerability. Implicit authority is ambient risk; explicit
-              authority is bounded risk.
+              scoped, leased, and set to expire. Trust and authority are
+              separate: an agent can be trusted completely and still permitted
+              nothing. Authority that can’t be traced to a grant should be
+              treated as a vulnerability. Implicit authority is ambient risk;
+              explicit authority is bounded risk.
             </p>
             <p>
-              A reference path maps this onto existing access models,
-              <em>Policy &rarr; Capability &rarr; Lease &rarr; Syscall</em>, as
-              one option, not the only one. The invariant is stronger than any
+              A reference path maps this onto existing access models (<em
+                >Policy → Capability → Lease → Syscall</em
+              >) as one option among several. The invariant is stronger than any
               particular pipeline: declared bounds are inescapable. An agent
-              cannot exceed or escalate its granted authority &mdash; not through
-              error, not when its model is swapped beneath it, not under failure,
-              and not when its own reasoning argues the bounds should not apply.
-              The grant is the ceiling, and it holds whether or not the agent
-              agrees with it.
+              cannot exceed or escalate its granted authority, not through
+              error, not when its model is swapped beneath it, not under
+              failure, and not when its own reasoning argues the bounds should
+              not apply. The grant is the ceiling, and it holds whether or not
+              the agent agrees with it.
             </p>
           </article>
 
@@ -679,16 +781,16 @@
             <p>
               Recording an action is part of performing it, not a separate step
               that gets skipped under load. An action that was not logged is
-              treated as not having happened &mdash; not as a slogan, but as the
-              operational definition. The audit log is not a debug trace or a
-              monitoring feed; it is the system&rsquo;s source of truth.
+              treated as not having happened. That is the operational definition
+              rather than a slogan. The audit log is not a debug trace or a
+              monitoring feed; it is the system’s source of truth.
             </p>
             <p>
-              Because of this, the audit record is also the durable substrate the
-              rest is rebuilt from: state, continuity, and memory derive from it
-              rather than from the volatile state of any agent or the context of
-              any model. Agents are disposable and models are replaceable
-              precisely because the record is neither.
+              Because of this, the audit record is also the durable substrate
+              the rest is rebuilt from: state, continuity, and memory derive
+              from it rather than from the volatile state of any agent or the
+              context of any model. Agents are disposable and models are
+              replaceable precisely because the record is neither.
             </p>
           </article>
 
@@ -701,21 +803,22 @@
               >
             </h3>
             <p>
-              Every agent has an owner &mdash; the principal who ultimately
-              answers for the work &mdash; and that owner can halt, suspend, or
-              revoke any agent, intent, or grant of authority at any time, for any
-              reason or none. This is the answer to the first question anyone asks
-              before handing work to an autonomous system: <em>can it be
-              stopped?</em> Yes.
+              Authority has a single root: the principal. Every agent has an
+              owner, the principal who ultimately answers for the work and from
+              whom all of its authority descends, and that owner can halt,
+              suspend, or revoke any agent, intent, or grant at any time, for
+              any reason or none. This is the answer to the first question
+              anyone asks before handing work to an autonomous system:
+              <em>can it be stopped?</em> Yes.
             </p>
             <p>
               The stop has to be unbypassable and always available: it must work
               mid-action, while the model is unreachable, while the system is
-              degraded, and specifically when the agent&rsquo;s own reasoning
-              objects to being stopped. Autonomy is granted, and what is granted
-              is revocable. This is mechanism, not policy: the kernel does not
-              decide <em>when</em> to pull the cord, only that the cord exists,
-              reaches every running agent, and can&rsquo;t be detached.
+              degraded, and specifically when the agent’s own reasoning objects
+              to being stopped. Autonomy is granted, and what is granted is
+              revocable. This is mechanism rather than policy: the kernel does
+              not decide <em>when</em> to pull the cord, only that the cord
+              exists, reaches every running agent, and can’t be detached.
             </p>
           </article>
 
@@ -730,19 +833,19 @@
             <p>
               The transcript and memory are different things. The transcript is
               the full, ordered record of what happened. Memory is the smaller,
-              curated result: the distilled lessons and corrections that let a new
-              agent resume where the last one stopped. Conflating the two is how
-              systems drown in their own history.
+              curated result: the distilled lessons and corrections that let a
+              new agent resume where the last one stopped. Conflating the two is
+              how systems drown in their own history.
             </p>
             <p>
-              Memory is built on the durable record (VI), not maintained as a
-              second store beside it &mdash; it is a curated projection of the
-              audit substrate. Every memory has an owner, a retention horizon, and
-              a reason to exist, and every memory is erasable. The division is
-              deliberate: the audit record is immutable, because accountability
-              needs an unalterable past; memory is erasable, because what gets
-              carried forward should be revisable, and because privacy and law
-              require deletion.
+              Memory is built on the durable record (VI) rather than maintained
+              as a second store beside it; it is a curated projection of the
+              audit substrate. Every memory has an owner, a retention horizon,
+              and a reason to exist, and every memory is erasable. The division
+              is deliberate: the audit record is immutable, because
+              accountability needs an unalterable past; memory is erasable,
+              because what gets carried forward should be revisable, and because
+              privacy and law require deletion.
             </p>
           </article>
 
@@ -757,18 +860,18 @@
             <p>
               This is the constraint that governs all the others: mechanism
               belongs in the kernel, policy in userspace. A small kernel is the
-              precondition for a large ecosystem &mdash; the less the foundation
+              precondition for a large ecosystem: the less the foundation
               mandates, the more can be built on it without permission.
             </p>
             <p>
-              The kernel owns only what can&rsquo;t be safely delegated:
-              execution, identity, authority, communication, and auditing &mdash;
-              with durability inside auditing, since a record that does not
-              persist is not a record. That is the whole list. Intent taxonomy is
-              userspace. Memory is userspace, a projection over the durable
-              record. The kernel provides the mechanisms these are built on
-              without becoming them. Keeping it small is the design goal, not a
-              constraint to be worked around.
+              The kernel owns only what can’t be safely delegated: execution,
+              identity, authority, communication, and auditing (durability lives
+              inside auditing, since a record that does not persist is useless).
+              That is the whole list. Intent taxonomy is userspace. Memory is
+              userspace, a projection over the durable record. The kernel
+              provides the mechanisms these are built on without becoming them.
+              Smallness here is the design goal, something to protect rather
+              than a limitation to work around.
             </p>
           </article>
         </section>
@@ -778,50 +881,51 @@
         <section id="boundary">
           <h2>Part II: The Boundary</h2>
           <p class="lead">
-            The contract. These hold even if you reject the worldview above; they
-            are what makes this a standard rather than a position paper, written
-            for anyone concerned about lock-in.
+            The contract. These hold even if you reject the worldview above;
+            once it exists in running code, they are what would make this a
+            standard rather than a position paper. Written for anyone concerned
+            about lock-in.
           </p>
 
           <p class="clause">
             <span class="term"
               >The standard is the boundary, not the build.</span
             >
-            A standard is an interface others target, not a codebase you install.
-            Many implementations have to be able to sit behind one contract
-            (large and small, open and proprietary), and an agent built against
-            the boundary should not need to know which one it runs on. The line is
-            defined where agents meet the runtime; what implements it is yours to
-            choose, build, or buy. If conforming requires adopting one specific
-            program, it is not a standard.
+            A standard is an interface others target; the codebase that
+            implements it stays swappable. Many implementations have to sit
+            behind one contract (large and small, open and proprietary), and an
+            agent built against the boundary should not need to know which one
+            it runs on. The line is defined where agents meet the runtime; what
+            implements it is yours to choose, build, or buy. If only one
+            specific program can satisfy it, it is a product, not a standard.
           </p>
 
           <p class="clause">
             <span class="term">Userspace does not break.</span> The interface
             beneath agents is stable, versioned, and backward-compatible. Work
             built against it keeps working as the implementation underneath
-            changes. The commitment is that you can build against the boundary for
-            years without it shifting beneath you &mdash; backward compatibility
-            is a property of the contract, not a best effort.
+            changes. You should be able to build against the boundary for years
+            without it shifting beneath you, because backward compatibility is
+            written into the contract rather than offered as a best effort.
           </p>
 
           <p class="clause">
             <span class="term">State is portable; exit is guaranteed.</span>
-            Principals, intents, memory, and audit are expressible in open formats
-            and exportable in full, including away from any single provider of the
-            foundation itself. Portability is a property of the boundary from the
-            first day, not a concession negotiated later. Everything that is yours
-            can be taken with you.
+            Principals, intents, memory, and audit are expressible in open
+            formats and exportable in full, including away from any single
+            provider of the foundation itself. Portability is a property of the
+            boundary from the first day, not a concession negotiated later.
+            Everything that is yours can be taken with you.
           </p>
 
           <p class="clause">
             <span class="term">Accountability is non-transferable.</span> Every
             action is attributable to a principal who answers for it. Autonomy
-            delegates execution, never responsibility. &ldquo;The agent did
-            it&rdquo; is not a defense. The grant of authority and the assignment
-            of answerability are the same act and can&rsquo;t be separated &mdash;
-            there is always an identifiable principal, and the system always
-            records which one.
+            delegates execution, never responsibility. “The agent did it” is not
+            a defense. The grant of authority and the assignment of
+            answerability are the same act and can’t be separated: there is
+            always an identifiable principal, and the system always records
+            which one.
           </p>
         </section>
 
@@ -830,36 +934,37 @@
         <section id="becomes-real">
           <h2>Part III: How This Becomes Real</h2>
           <p>
-            A standard is only credible if it commits to things it can be measured
-            against. These are the commitments.
+            A standard is only credible if it commits to things it can be
+            measured against. These are the commitments.
           </p>
 
           <p class="clause">
-            <span class="term">Governance is vendor-neutral.</span> No single
-            party owns the boundary or sets its direction. It advances by rough
-            consensus and running code, validated against a shared conformance
-            suite any implementation can be tested against, rather than by decree.
-            Conformance is something anyone can verify.
+            <span class="term">Governance.</span> The boundary should eventually
+            become vendor-neutral, advancing by rough consensus and running code
+            rather than by decree. The mechanism for that is a shared
+            conformance suite any implementation can be tested against. That
+            suite does not exist yet; building it in the open is the project’s
+            first deliverable, and contributions are the point.
           </p>
 
           <p class="clause">
-            <span class="term">Adoption is additive.</span> The path from current
-            prompt-and-session tools runs forward, not through a rewrite. You put
-            the layer under what you already run, and what you already run keeps
-            working. Nothing has to be thrown out to adopt it.
+            <span class="term">Adoption is meant to be additive.</span> The path
+            from current prompt-and-session tools should run forward rather than
+            through a rewrite: you put the layer under what you already run, and
+            what you already run keeps working. Nothing should have to be thrown
+            out to adopt it.
           </p>
 
           <p class="clause">
             <span class="term"
-              >&ldquo;Build for decades&rdquo; reduces to falsifiable
-              constraints.</span
+              >“Build for decades” reduces to falsifiable constraints.</span
             >
-            The claim is not faith; it is three things you can hold the project
-            to: a versioned, backward-compatible contract; no dependence on any
-            single model or vendor, the foundation&rsquo;s own included; and
-            durable state in open, exportable formats. A foundation succeeds when
-            it becomes unremarkable enough to ignore &mdash; when the work above
-            it assumes it is there and stops thinking about it.
+            The claim rests on three things you can hold the project to: a
+            versioned, backward-compatible contract; no dependence on any single
+            model or vendor, the foundation’s own included; and durable state in
+            open, exportable formats. A foundation like this succeeds when it
+            becomes unremarkable enough to ignore, when the work above it
+            assumes it is there and stops thinking about it.
           </p>
 
           <p>
@@ -873,15 +978,22 @@
           </p>
 
           <p class="kicker">
-            The goal is not to make agents seem alive. It is to make them safe to
-            run.
+            The goal is not to make agents seem alive. It is to make them safe
+            to run.
           </p>
         </section>
+
+        <blockquote class="envoi">
+          The model is what thinks. The kernel is what endures.
+        </blockquote>
       </main>
 
       <footer>
-        <span>autonomykernel.org</span>
-        <nav><a href="primitives.html">Core primitives &rarr;</a></nav>
+        <span>autonomykernel.org · Vlad Palos · May 2026</span>
+        <nav>
+          <a href="https://github.com/offbeatport/autonomykernel">GitHub</a>
+          <a href="primitives.html">Core primitives →</a>
+        </nav>
       </footer>
     </div>
   </body>
