@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Core Primitives &mdash; The Agent Kernel</title>
+    <meta
+      name="description"
+      content="The nouns of the kernel: the objects it knows by name, the hierarchy of purpose, the authority chain, and the execution rule."
+    />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Core Primitives — The Agent Kernel" />
+    <meta
+      property="og:description"
+      content="The objects the kernel knows by name, the hierarchy of purpose, the authority chain, and the execution rule."
+    />
+    <meta
+      property="og:url"
+      content="https://autonomykernel.org/primitives.html"
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Core Primitives — The Agent Kernel" />
+    <meta
+      name="twitter:description"
+      content="The objects the kernel knows by name, the hierarchy of purpose, the authority chain, and the execution rule."
+    />
+
+    <meta
+      name="theme-color"
+      content="#fbfaf7"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#15161a"
+      media="(prefers-color-scheme: dark)"
+    />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%233a52cc' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3.4' fill='%233a52cc'/%3E%3C/svg%3E"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        color-scheme: light dark;
+
+        --bg: light-dark(oklch(0.985 0.006 85), oklch(0.165 0.008 265));
+        --ink: light-dark(oklch(0.245 0.012 75), oklch(0.915 0.006 85));
+        --muted: light-dark(oklch(0.505 0.012 75), oklch(0.66 0.012 265));
+        --hair: light-dark(oklch(0.885 0.007 85), oklch(0.305 0.01 265));
+        --accent: light-dark(oklch(0.5 0.14 262), oklch(0.76 0.12 262));
+        --tint: color-mix(in oklch, var(--accent) 9%, var(--bg));
+
+        --display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+        --body:
+          "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+          sans-serif;
+        --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+        --measure: 46rem;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--body);
+        font-size: clamp(1.02rem, 0.97rem + 0.25vw, 1.18rem);
+        line-height: 1.66;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        font-feature-settings: "kern", "liga", "calt";
+      }
+
+      ::selection {
+        background: color-mix(in oklch, var(--accent) 22%, var(--bg));
+      }
+
+      .wrap {
+        max-width: var(--measure);
+        margin-inline: auto;
+        padding-inline: clamp(1.3rem, 5vw, 3rem);
+      }
+
+      /* ---------- Masthead ---------- */
+      .masthead {
+        padding-block: clamp(3rem, 9vh, 6rem) clamp(2.2rem, 6vw, 3.6rem);
+      }
+      .eyebrow {
+        font-size: 0.74rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 0 0 clamp(1.6rem, 5vw, 2.6rem);
+      }
+      .eyebrow a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .eyebrow a:hover {
+        color: var(--accent);
+      }
+      .eyebrow .sep {
+        color: var(--hair);
+        margin-inline: 0.6em;
+      }
+      .eyebrow .here {
+        color: var(--ink);
+      }
+
+      h1 {
+        font-family: var(--display);
+        font-weight: 300;
+        font-size: clamp(2.6rem, 1.7rem + 4.8vw, 5rem);
+        line-height: 1;
+        letter-spacing: -0.025em;
+        margin: 0;
+        text-wrap: balance;
+      }
+      .subtitle {
+        font-style: italic;
+        color: var(--muted);
+        font-size: clamp(1.1rem, 1rem + 0.6vw, 1.4rem);
+        line-height: 1.45;
+        max-width: 40ch;
+        margin: clamp(1.3rem, 3vw, 1.9rem) 0 0;
+      }
+
+      main {
+        padding-bottom: 2rem;
+      }
+      section {
+        padding-block: clamp(2.6rem, 6vw, 4.4rem);
+      }
+
+      h2 {
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.4rem);
+        letter-spacing: -0.015em;
+        line-height: 1.1;
+        margin: 0 0 1.2rem;
+      }
+      .lead {
+        font-style: italic;
+        color: var(--muted);
+        max-width: 54ch;
+        margin: 0 0 2.2rem;
+      }
+
+      .rule {
+        border: 0;
+        height: 1px;
+        background: var(--hair);
+        margin: 0;
+      }
+      code {
+        font-family: var(--mono);
+        font-size: 0.84em;
+        background: var(--tint);
+        padding: 0.06em 0.38em;
+        border-radius: 4px;
+        white-space: nowrap;
+      }
+
+      /* ---------- Primitive ledger ---------- */
+      .ledger {
+        margin: 0;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.12rem;
+        padding-block: 0.95rem;
+        border-top: 1px solid var(--hair);
+      }
+      .row:last-child {
+        border-bottom: 1px solid var(--hair);
+      }
+      .pr {
+        font-family: var(--display);
+        font-weight: 500;
+        letter-spacing: -0.01em;
+      }
+      .df {
+        color: var(--muted);
+        font-size: 0.95em;
+      }
+      .df em {
+        font-style: italic;
+        color: var(--ink);
+      }
+
+      @media (min-width: 42rem) {
+        .row {
+          grid-template-columns: 12rem 1fr;
+          column-gap: 1.6rem;
+          align-items: baseline;
+        }
+      }
+
+      /* ---------- Chains ---------- */
+      .chains {
+        display: grid;
+        gap: clamp(2.2rem, 5vw, 3.4rem);
+      }
+      @media (min-width: 48rem) {
+        .chains {
+          grid-template-columns: 1fr 1fr;
+          gap: clamp(2rem, 4vw, 3.5rem);
+        }
+      }
+
+      .sub {
+        font-family: var(--display);
+        font-weight: 500;
+        font-size: 0.76rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 0 0 1.1rem;
+      }
+      .chain {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        font-family: var(--display);
+      }
+      .chain li {
+        padding-block: 0.3rem;
+        padding-left: calc(var(--d, 0) * 1.5rem);
+        font-size: clamp(1.02rem, 0.97rem + 0.3vw, 1.22rem);
+        letter-spacing: -0.01em;
+        color: var(--ink);
+      }
+      .chain li:not(:first-child)::before {
+        content: "\21B3\00a0";
+        color: var(--accent);
+      }
+      .chain li:last-child {
+        color: var(--accent);
+        font-weight: 500;
+      }
+      .converge {
+        font-style: italic;
+        color: var(--muted);
+        font-size: 0.9em;
+        margin: 1.8rem 0 0;
+      }
+
+      /* ---------- Execution rule ---------- */
+      .rule-steps {
+        font-family: var(--display);
+        font-weight: 300;
+        font-size: clamp(1.6rem, 1.1rem + 2.1vw, 2.5rem);
+        line-height: 1.28;
+        letter-spacing: -0.02em;
+        margin: 0;
+      }
+      .rule-steps p {
+        margin: 0.05em 0;
+      }
+      .rule-steps b {
+        font-weight: 500;
+        color: var(--accent);
+      }
+
+      /* ---------- Footer ---------- */
+      footer {
+        margin-top: clamp(3rem, 8vw, 5rem);
+        padding-block: 2rem clamp(2.5rem, 6vw, 4rem);
+        border-top: 1px solid var(--hair);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.5rem;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+      }
+      footer a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      footer a:hover {
+        color: var(--accent);
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .masthead > * {
+          animation: rise 0.8s cubic-bezier(0.22, 0.7, 0.2, 1) both;
+        }
+        .masthead .eyebrow {
+          animation-delay: 0.02s;
+        }
+        .masthead h1 {
+          animation-delay: 0.1s;
+        }
+        .masthead .subtitle {
+          animation-delay: 0.22s;
+        }
+        @keyframes rise {
+          from {
+            opacity: 0;
+            transform: translateY(0.7rem);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header class="masthead">
+        <p class="eyebrow">
+          <a href="index.html">autonomykernel.org</a><span class="sep">/</span
+          ><span class="here">Primitives</span>
+        </p>
+        <h1>Core Primitives</h1>
+        <p class="subtitle">
+          The nouns of the kernel: the objects it knows by name, and the two
+          chains that bind them.
+        </p>
+      </header>
+
+      <hr class="rule" />
+
+      <main>
+        <section id="primitives">
+          <h2>The Primitives</h2>
+          <p class="lead">
+            Everything the kernel governs is one of these, or built from them.
+          </p>
+
+          <div class="ledger">
+            <div class="row">
+              <span class="pr">Principal</span
+              ><span class="df"
+                >Root owner of authority, memory, budgets, agents, intents, and
+                policies. Can represent a person, team, company, service, or
+                autonomous collective.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Identity</span
+              ><span class="df"
+                >Stable identifier for a principal, agent, process, tool,
+                memory, or object. Survives restarts, upgrades, migrations, and
+                model changes.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Namespace</span
+              ><span class="df"
+                >Isolation boundary for names, objects, permissions, and
+                resources. Prevents collisions and enables multi-tenancy.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Intent</span
+              ><span class="df"
+                >Long-lived purpose. Answers:
+                <em>why are we doing this?</em> Not directly executable.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Goal</span
+              ><span class="df"
+                >Measurable outcome derived from an intent. Answers:
+                <em>what must be achieved?</em></span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Task</span
+              ><span class="df"
+                >Executable unit of work derived from a goal. Answers:
+                <em>what work should happen?</em></span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Process</span
+              ><span class="df"
+                >Running execution context for a task. Can start, pause, sleep,
+                checkpoint, resume, crash, recover, or terminate.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Action</span
+              ><span class="df"
+                >Atomic operation attempted by a process. Example: read file,
+                send email, call API.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Agent</span
+              ><span class="df"
+                >Autonomous worker that reasons, plans, and requests actions.
+                Agents are disposable; the system is durable.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Capability</span
+              ><span class="df"
+                >Explicit permission to do something. Example:
+                <code>email.send</code>, <code>filesystem.write</code>,
+                <code>browser.navigate</code>.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Policy</span
+              ><span class="df"
+                >Rule that constrains authority. Example: &ldquo;require
+                approval before emailing external contacts.&rdquo;</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Lease</span
+              ><span class="df"
+                >Temporary, scoped authority. Example: &ldquo;may send 20 emails
+                in the next hour.&rdquo;</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Budget</span
+              ><span class="df"
+                >Resource limit. Tracks tokens, money, time, API calls, compute,
+                risk, or tool usage.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Approval</span
+              ><span class="df"
+                >Human or supervisory authorization gate. Lifecycle: pending,
+                approved, denied, expired.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Syscall</span
+              ><span class="df"
+                >Controlled boundary between agent space and kernel space.
+                Agents request actions; the kernel validates and executes.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Event</span
+              ><span class="df"
+                >Immutable fact that something happened. Events drive the
+                system.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Message</span
+              ><span class="df"
+                >Communication between users, agents, processes, plugins, or the
+                kernel.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Memory</span
+              ><span class="df"
+                >Persistent knowledge and experience. Should be pluggable, but
+                referenced by kernel objects.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Provenance</span
+              ><span class="df"
+                >Lineage of data, memory, decisions, and actions. Answers:
+                <em>where did this come from?</em></span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Version</span
+              ><span class="df"
+                >Immutable revision of an object, policy, prompt, plugin,
+                memory, or agent definition. Required for replay.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Audit Log</span
+              ><span class="df"
+                >Append-only record of all state transitions, decisions,
+                permissions, syscalls, actions, approvals, and memory
+                mutations.</span
+              >
+            </div>
+            <div class="row">
+              <span class="pr">Plugin</span
+              ><span class="df"
+                >Replaceable subsystem implementing kernel contracts. Examples:
+                scheduler, memory, model, storage, sandbox, evaluator.</span
+              >
+            </div>
+          </div>
+        </section>
+
+        <hr class="rule" />
+
+        <section id="structure">
+          <h2>Structure</h2>
+          <p class="lead">
+            Two chains run through the kernel: one for purpose, one for power.
+            Both end at the same gate.
+          </p>
+
+          <div class="chains">
+            <div>
+              <p class="sub">Main hierarchy</p>
+              <ol class="chain">
+                <li style="--d: 0">Principal</li>
+                <li style="--d: 1">Intent</li>
+                <li style="--d: 2">Goal</li>
+                <li style="--d: 3">Task</li>
+                <li style="--d: 4">Process</li>
+                <li style="--d: 5">Action</li>
+                <li style="--d: 6">Syscall</li>
+              </ol>
+            </div>
+            <div>
+              <p class="sub">Authority chain</p>
+              <ol class="chain">
+                <li style="--d: 0">Principal</li>
+                <li style="--d: 1">Policy</li>
+                <li style="--d: 2">Capability</li>
+                <li style="--d: 3">Lease</li>
+                <li style="--d: 4">Budget</li>
+                <li style="--d: 5">Approval</li>
+                <li style="--d: 6">Syscall</li>
+              </ol>
+            </div>
+          </div>
+          <p class="converge">
+            Both chains start at the principal and narrow, step by step, until
+            they meet at the syscall &mdash; the single gate where intent and
+            authority are checked together before any action executes.
+          </p>
+        </section>
+
+        <hr class="rule" />
+
+        <section id="execution-rule">
+          <h2>The Execution Rule</h2>
+          <p class="lead">Four moves, always in this order.</p>
+          <div class="rule-steps">
+            <p><b>Agents</b> propose.</p>
+            <p><b>Kernel</b> authorizes.</p>
+            <p><b>Syscalls</b> execute.</p>
+            <p><b>Audit log</b> remembers.</p>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <span>autonomykernel.org</span>
+        <nav><a href="index.html">&larr; The Hypothesis</a></nav>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>The Agent Kernel Hypothesis</title>
+    <meta
+      name="description"
+      content="An operating system for autonomous work: a worldview to weigh, and a boundary to build on."
+    />
+
+    <!-- Social previews. Add an og:image (1200x630) before wide sharing. -->
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="The Agent Kernel Hypothesis" />
+    <meta
+      property="og:description"
+      content="An operating system for autonomous work: a worldview to weigh, and a boundary to build on."
+    />
+    <meta property="og:url" content="https://autonomykernel.org/" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="The Agent Kernel Hypothesis" />
+    <meta
+      name="twitter:description"
+      content="An operating system for autonomous work: a worldview to weigh, and a boundary to build on."
+    />
+
+    <meta
+      name="theme-color"
+      content="#fbfaf7"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#15161a"
+      media="(prefers-color-scheme: dark)"
+    />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%233a52cc' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3.4' fill='%233a52cc'/%3E%3C/svg%3E"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Space+Grotesk:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        color-scheme: light dark;
+
+        --bg: light-dark(oklch(0.985 0.006 85), oklch(0.165 0.008 265));
+        --ink: light-dark(oklch(0.245 0.012 75), oklch(0.915 0.006 85));
+        --muted: light-dark(oklch(0.505 0.012 75), oklch(0.66 0.012 265));
+        --hair: light-dark(oklch(0.885 0.007 85), oklch(0.305 0.01 265));
+        --accent: light-dark(oklch(0.5 0.14 262), oklch(0.76 0.12 262));
+        --tint: color-mix(in oklch, var(--accent) 9%, var(--bg));
+
+        --display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+        --body:
+          "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+          sans-serif;
+
+        --measure: 44rem;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--body);
+        font-weight: 400;
+        font-size: clamp(1.02rem, 0.97rem + 0.25vw, 1.18rem);
+        line-height: 1.66;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        font-feature-settings: "kern", "liga", "calt";
+      }
+
+      ::selection {
+        background: color-mix(in oklch, var(--accent) 22%, var(--bg));
+      }
+
+      .wrap {
+        max-width: var(--measure);
+        margin-inline: auto;
+        padding-inline: clamp(1.3rem, 5vw, 3rem);
+      }
+
+      /* ---------- Masthead ---------- */
+      .masthead {
+        padding-block: clamp(4rem, 13vh, 9rem) clamp(2.4rem, 6vw, 4rem);
+      }
+      .eyebrow {
+        font-size: 0.74rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 0 0 clamp(1.6rem, 5vw, 2.8rem);
+      }
+      .eyebrow .dot {
+        color: var(--accent);
+      }
+
+      h1 {
+        font-family: var(--display);
+        font-weight: 300;
+        font-size: clamp(2.7rem, 1.6rem + 5.6vw, 5.4rem);
+        line-height: 1;
+        letter-spacing: -0.025em;
+        margin: 0;
+        text-wrap: balance;
+      }
+
+      .subtitle {
+        font-family: var(--body);
+        font-style: italic;
+        font-weight: 400;
+        color: var(--muted);
+        font-size: clamp(1.1rem, 1rem + 0.6vw, 1.4rem);
+        line-height: 1.45;
+        max-width: 36ch;
+        margin: clamp(1.4rem, 3vw, 2rem) 0 0;
+      }
+
+      /* ---------- Sections ---------- */
+      main {
+        padding-bottom: 2rem;
+      }
+
+      section {
+        padding-block: clamp(2.6rem, 6vw, 4.6rem);
+      }
+
+      h2 {
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.5rem);
+        letter-spacing: -0.015em;
+        line-height: 1.1;
+        margin: 0 0 1.4rem;
+      }
+
+      .lead {
+        font-style: italic;
+        color: var(--muted);
+        font-size: 1.05em;
+        max-width: 52ch;
+        margin: 0 0 2.2rem;
+      }
+
+      p {
+        margin: 0 0 1.25em;
+        max-width: 66ch;
+      }
+      section > p:last-child,
+      article > p:last-child {
+        margin-bottom: 0;
+      }
+
+      em {
+        font-style: italic;
+      }
+      strong {
+        font-weight: 600;
+      }
+      a {
+        color: var(--accent);
+        text-underline-offset: 0.18em;
+        text-decoration-thickness: from-font;
+      }
+
+      /* ---------- Divider ---------- */
+      .rule {
+        border: 0;
+        height: 1px;
+        background: var(--hair);
+        margin: 0;
+      }
+
+      /* ---------- Principles ledger ---------- */
+      .ledger {
+        margin: 0;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1.7rem 1fr;
+        column-gap: 0.7rem;
+        row-gap: 0.15rem;
+        padding-block: 0.95rem;
+        border-top: 1px solid var(--hair);
+      }
+      .row:last-child {
+        border-bottom: 1px solid var(--hair);
+      }
+      .rn {
+        grid-row: span 2;
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: 0.82rem;
+        line-height: 1.7;
+        color: var(--accent);
+        letter-spacing: 0.02em;
+        padding-top: 0.12rem;
+      }
+      .pr {
+        font-family: var(--display);
+        font-weight: 500;
+        letter-spacing: -0.01em;
+      }
+      .gl {
+        grid-column: 2;
+        color: var(--muted);
+        font-size: 0.94em;
+      }
+
+      .caption {
+        font-style: italic;
+        color: var(--muted);
+        font-size: 0.92em;
+        margin: 1.5rem 0 0;
+      }
+
+      /* ---------- Tenets ---------- */
+      .tenet {
+        margin-block: clamp(2rem, 4.5vw, 3rem);
+      }
+      .tenet:first-of-type {
+        margin-top: 0;
+      }
+      .tenet h3 {
+        display: grid;
+        grid-template-columns: 2rem 1fr;
+        column-gap: 0.8rem;
+        align-items: baseline;
+        margin: 0 0 1rem;
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.6rem);
+        letter-spacing: -0.012em;
+        line-height: 1.18;
+      }
+      .tenet h3 .rn {
+        grid-row: auto;
+        font-size: 0.95rem;
+        padding-top: 0;
+        color: var(--accent);
+      }
+      .tag {
+        display: inline-block;
+        margin-left: 0.55rem;
+        font-family: var(--body);
+        font-weight: 400;
+        font-size: 0.62em;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        vertical-align: 0.22em;
+        white-space: nowrap;
+      }
+      .tag::before {
+        content: "[";
+      }
+      .tag::after {
+        content: "]";
+      }
+
+      /* ---------- Clauses (Part II / III) ---------- */
+      .clause {
+        margin-block: 1.6rem;
+      }
+      .clause .term {
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      /* ---------- Kicker ---------- */
+      .kicker {
+        font-family: var(--display);
+        font-weight: 300;
+        font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.2rem);
+        line-height: 1.22;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        max-width: 22ch;
+        margin: clamp(2rem, 5vw, 3.4rem) 0 0;
+      }
+
+      /* ---------- Footer ---------- */
+      footer {
+        margin-top: clamp(3rem, 8vw, 5.5rem);
+        padding-block: 2rem clamp(2.5rem, 6vw, 4rem);
+        border-top: 1px solid var(--hair);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.5rem;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+      }
+      footer a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      footer a:hover {
+        color: var(--accent);
+      }
+
+      /* ---------- Wider screens: hang the tenet numerals into the gutter ---------- */
+      @media (min-width: 56rem) {
+        .tenet h3 {
+          grid-template-columns: 2.4rem 1fr;
+          margin-left: -3.2rem;
+          padding-left: 0;
+        }
+        .tenet h3 .rn {
+          text-align: right;
+        }
+      }
+
+      /* ---------- Wider screens: 3-column ledger ---------- */
+      @media (min-width: 40rem) {
+        .row {
+          grid-template-columns: 2.2rem 13.5rem 1fr;
+          align-items: baseline;
+          column-gap: 1rem;
+        }
+        .rn {
+          grid-row: auto;
+        }
+        .gl {
+          grid-column: auto;
+          font-size: 0.95em;
+        }
+      }
+
+      /* ---------- Entrance ---------- */
+      @media (prefers-reduced-motion: no-preference) {
+        .masthead > * {
+          animation: rise 0.8s cubic-bezier(0.22, 0.7, 0.2, 1) both;
+        }
+        .masthead .eyebrow {
+          animation-delay: 0.02s;
+        }
+        .masthead h1 {
+          animation-delay: 0.1s;
+        }
+        .masthead .subtitle {
+          animation-delay: 0.22s;
+        }
+        @keyframes rise {
+          from {
+            opacity: 0;
+            transform: translateY(0.7rem);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header class="masthead">
+        <p class="eyebrow">autonomykernel<span class="dot">.</span>org</p>
+        <h1>The Agent Kernel Hypothesis</h1>
+        <p class="subtitle">
+          An operating system for autonomous work: a worldview to weigh, and a
+          boundary to build on.
+        </p>
+      </header>
+
+      <hr class="rule" />
+
+      <main>
+        <section id="substrate">
+          <h2>The Substrate</h2>
+          <p>
+            Autonomous agents today are created by a prompt and discarded at the
+            end of the session. But we increasingly ask them to hold real
+            authority and act on our behalf for days rather than seconds, and
+            there is no shared layer underneath them that governs what an agent
+            may do, records what it did, retains what it learned, and can stop it
+            on demand. Agent Kernel is that layer: a runtime beneath the agents
+            and the models they reason with. Agents are disposable and models are
+            replaceable; the layer beneath them should be neither.
+          </p>
+        </section>
+
+        <hr class="rule" />
+
+        <section id="principles">
+          <h2>The Principles</h2>
+          <div class="ledger">
+            <div class="row">
+              <span class="rn">I</span
+              ><span class="pr">Agents are processes</span
+              ><span class="gl">named, observed, accountable units of work</span>
+            </div>
+            <div class="row">
+              <span class="rn">II</span
+              ><span class="pr">Agents are disposable</span
+              ><span class="gl"
+                >continuity belongs to the system, not the instance</span
+              >
+            </div>
+            <div class="row">
+              <span class="rn">III</span
+              ><span class="pr">Models are replaceable</span
+              ><span class="gl"
+                >and so is the kernel&rsquo;s own implementation</span
+              >
+            </div>
+            <div class="row">
+              <span class="rn">IV</span
+              ><span class="pr">Intent must be traceable</span
+              ><span class="gl">every action links to an authorizing reason</span>
+            </div>
+            <div class="row">
+              <span class="rn">V</span
+              ><span class="pr">Authority must be explicit</span
+              ><span class="gl">granted and scoped; the default is deny</span>
+            </div>
+            <div class="row">
+              <span class="rn">VI</span
+              ><span class="pr">Everything must be auditable</span
+              ><span class="gl"
+                >an unlogged action is treated as not having happened</span
+              >
+            </div>
+            <div class="row">
+              <span class="rn">VII</span
+              ><span class="pr">The principal is sovereign</span
+              ><span class="gl"
+                >every grant is revocable, including mid-action</span
+              >
+            </div>
+            <div class="row">
+              <span class="rn">VIII</span
+              ><span class="pr">Memory is governed</span
+              ><span class="gl"
+                >the record is immutable; memory is curated, erasable</span
+              >
+            </div>
+            <div class="row">
+              <span class="rn">IX</span
+              ><span class="pr">The kernel must be small</span
+              ><span class="gl"
+                >mechanism in the kernel, policy in userspace</span
+              >
+            </div>
+            <div class="row">
+              <span class="rn">X</span
+              ><span class="pr">The standard is the boundary</span
+              ><span class="gl">many implementations, one stable contract</span>
+            </div>
+            <div class="row">
+              <span class="rn">XI</span
+              ><span class="pr">Accountability is non-transferable</span
+              ><span class="gl">a principal always answers for the action</span>
+            </div>
+          </div>
+          <p class="caption">Each principle is stated here and argued below.</p>
+        </section>
+
+        <hr class="rule" />
+
+        <section id="preface">
+          <h2>Preface: Naming the Substrate</h2>
+          <p>
+            The operating system kernel solved a specific problem: every program
+            spoke to the hardware in its own way, reimplemented the same
+            primitives, and failed in its own way. The kernel was the layer
+            between hardware and software that made the rest possible &mdash; not
+            by being clever, but by being the part nothing else had to
+            reimplement. It defined an interface and held it stable.
+          </p>
+          <p>
+            Autonomous agents are at a similar point. Agents sit above, models
+            below, and between them is mostly glue code and convention. The shift
+            underway is from prompts and sessions to long-lived processes: work
+            that persists and can be named, paused, inspected, and audited. That
+            shift needs a defined layer to run on.
+          </p>
+          <p>
+            Three layers, then: the agent is a process; the model is the
+            reasoning engine inside it; the kernel is the runtime beneath both.
+            The model is the most capable layer and the least permanent. The
+            kernel changes slowly. The ordering is by endurance, not importance
+            &mdash; what reasons is replaceable, what governs is not.
+          </p>
+          <p>
+            This is a layer beneath existing tools, not a replacement for them.
+            Frameworks, assistants, workflow tools, and the models themselves are
+            userspace, where the work happens. The kernel&rsquo;s role is to be
+            the part none of them has to reimplement and the part none of them can
+            quietly break. Today&rsquo;s tools are the first things that would run
+            on it, not obstacles to it.
+          </p>
+          <p>
+            This document has two parts, and it keeps them separate. Part I is a
+            worldview: an opinionated account of what autonomous systems are and
+            how they should behave, which you can accept or argue with. Part II is
+            a boundary: a contract you can build against even if you reject the
+            worldview entirely. A standard requires agreement about interfaces,
+            not about meaning.
+          </p>
+        </section>
+
+        <hr class="rule" />
+
+        <section id="worldview">
+          <h2>Part I: The Worldview</h2>
+          <p class="lead">
+            Nine claims. Some are positions you may reject; some are invariants
+            the design treats as non-negotiable. Each is labeled.
+          </p>
+
+          <article class="tenet">
+            <h3>
+              <span class="rn">I</span
+              ><span
+                >Agents Are Processes <span class="tag">ontology</span></span
+              >
+            </h3>
+            <p>
+              An agent is a process: a unit of work with a beginning, a
+              lifecycle, state, and an end. This is a logical abstraction, like a
+              database transaction or an account &mdash; not a scheduler PID. The
+              point is that a process can be named, listed, paused, resumed, and
+              inspected while it runs, by something other than itself.
+            </p>
+            <p>
+              The alternative is to grant authority to something you can&rsquo;t
+              name, inspect, or hold to account. A process you can observe is a
+              process you can govern, and only what can be governed can be trusted
+              with anything that matters. Everything below depends on there being
+              a named entity for the rest to attach to: the kernel has to know
+              what is running, why, on whose behalf, what it may do, what it has
+              done, and when it must stop.
+            </p>
+          </article>
+
+          <article class="tenet">
+            <h3>
+              <span class="rn">II</span
+              ><span
+                >Agents Are Disposable
+                <span class="tag">follows from I</span></span
+              >
+            </h3>
+            <p>
+              If an agent is a process, any single instance is expendable. The
+              agent is the unit of execution, not the unit of meaning. Continuity
+              does not live in the instance: what has to survive &mdash; intent,
+              authority, memory, the record &mdash; belongs to the system, not to
+              the worker that happened to hold it.
+            </p>
+            <p>
+              This is a design choice, not a value judgment. A system that
+              can&rsquo;t survive the loss of any single worker is fragile by
+              construction. Treating instances as disposable buys the freedom to
+              kill, restart, fork, and replace a running agent without losing what
+              the work was for.
+            </p>
+          </article>
+
+          <article class="tenet">
+            <h3>
+              <span class="rn">III</span
+              ><span
+                >Models Are Replaceable <span class="tag">ontology</span></span
+              >
+            </h3>
+            <p>
+              The model is the reasoning engine, and engines get swapped and
+              retired. Build directly on a model and you inherit its shelf life:
+              when it is deprecated, so is your stack, and the vendor&rsquo;s
+              roadmap becomes yours. Build on a kernel and the model becomes a
+              component &mdash; the most capable one, but a replaceable one behind
+              a stable interface. An agent should be able to change the model it
+              reasons with without changing what it is, what it may do, or what it
+              owes.
+            </p>
+            <p>
+              The same logic applies one layer down. It is not enough for models
+              to be replaceable if the layer beneath them is locked: no single
+              implementation of the kernel, and no single vendor of it, should
+              become the next thing you can&rsquo;t leave. The boundary itself has
+              to be open and portable. What that requires is the subject of Part
+              II.
+            </p>
+          </article>
+
+          <article class="tenet">
+            <h3>
+              <span class="rn">IV</span
+              ><span
+                >Intent Must Be Traceable
+                <span class="tag">invariant</span></span
+              >
+            </h3>
+            <p>
+              Every action must trace to an authorizing principal and a reason it
+              was permitted. The requirement is not that intent be elaborate, only
+              that it be present and followable. An action with no recoverable
+              reason is a defect regardless of its result; as execution gets
+              cheaper, unaccountable automation mostly produces volume.
+            </p>
+            <p>
+              The kernel&rsquo;s responsibility here is <strong>lineage</strong>:
+              an unbroken link from an action back to who authorized it and why,
+              enforced where execution, identity, and auditing meet. The kernel
+              does not own the meaning. One reference decomposition,
+              <em
+                >Principal &rarr; Intent &rarr; Goal &rarr; Task &rarr; Process
+                &rarr; Action</em
+              >, is a useful map of the path from reason to deed, not a required
+              one. How richly intent is modeled is a userspace concern;
+              <em>that</em> it is traceable is not.
+            </p>
+          </article>
+
+          <article class="tenet">
+            <h3>
+              <span class="rn">V</span
+              ><span
+                >Authority Must Be Explicit
+                <span class="tag">invariant</span></span
+              >
+            </h3>
+            <p>
+              The default is deny. Authority is never assumed, inherited by
+              proximity, or earned by good behavior; it is granted explicitly,
+              scoped, leased, and set to expire. Trust and authority are separate:
+              an agent can be trusted completely and still permitted nothing.
+              Authority that can&rsquo;t be traced to a grant should be treated as
+              a vulnerability. Implicit authority is ambient risk; explicit
+              authority is bounded risk.
+            </p>
+            <p>
+              A reference path maps this onto existing access models,
+              <em>Policy &rarr; Capability &rarr; Lease &rarr; Syscall</em>, as
+              one option, not the only one. The invariant is stronger than any
+              particular pipeline: declared bounds are inescapable. An agent
+              cannot exceed or escalate its granted authority &mdash; not through
+              error, not when its model is swapped beneath it, not under failure,
+              and not when its own reasoning argues the bounds should not apply.
+              The grant is the ceiling, and it holds whether or not the agent
+              agrees with it.
+            </p>
+          </article>
+
+          <article class="tenet">
+            <h3>
+              <span class="rn">VI</span
+              ><span
+                >Everything Must Be Auditable
+                <span class="tag">invariant</span></span
+              >
+            </h3>
+            <p>
+              Recording an action is part of performing it, not a separate step
+              that gets skipped under load. An action that was not logged is
+              treated as not having happened &mdash; not as a slogan, but as the
+              operational definition. The audit log is not a debug trace or a
+              monitoring feed; it is the system&rsquo;s source of truth.
+            </p>
+            <p>
+              Because of this, the audit record is also the durable substrate the
+              rest is rebuilt from: state, continuity, and memory derive from it
+              rather than from the volatile state of any agent or the context of
+              any model. Agents are disposable and models are replaceable
+              precisely because the record is neither.
+            </p>
+          </article>
+
+          <article class="tenet">
+            <h3>
+              <span class="rn">VII</span
+              ><span
+                >The Principal Is Sovereign
+                <span class="tag">invariant</span></span
+              >
+            </h3>
+            <p>
+              Every agent has an owner &mdash; the principal who ultimately
+              answers for the work &mdash; and that owner can halt, suspend, or
+              revoke any agent, intent, or grant of authority at any time, for any
+              reason or none. This is the answer to the first question anyone asks
+              before handing work to an autonomous system: <em>can it be
+              stopped?</em> Yes.
+            </p>
+            <p>
+              The stop has to be unbypassable and always available: it must work
+              mid-action, while the model is unreachable, while the system is
+              degraded, and specifically when the agent&rsquo;s own reasoning
+              objects to being stopped. Autonomy is granted, and what is granted
+              is revocable. This is mechanism, not policy: the kernel does not
+              decide <em>when</em> to pull the cord, only that the cord exists,
+              reaches every running agent, and can&rsquo;t be detached.
+            </p>
+          </article>
+
+          <article class="tenet">
+            <h3>
+              <span class="rn">VIII</span
+              ><span
+                >Memory Is Governed
+                <span class="tag">discipline built on the kernel</span></span
+              >
+            </h3>
+            <p>
+              The transcript and memory are different things. The transcript is
+              the full, ordered record of what happened. Memory is the smaller,
+              curated result: the distilled lessons and corrections that let a new
+              agent resume where the last one stopped. Conflating the two is how
+              systems drown in their own history.
+            </p>
+            <p>
+              Memory is built on the durable record (VI), not maintained as a
+              second store beside it &mdash; it is a curated projection of the
+              audit substrate. Every memory has an owner, a retention horizon, and
+              a reason to exist, and every memory is erasable. The division is
+              deliberate: the audit record is immutable, because accountability
+              needs an unalterable past; memory is erasable, because what gets
+              carried forward should be revisable, and because privacy and law
+              require deletion.
+            </p>
+          </article>
+
+          <article class="tenet">
+            <h3>
+              <span class="rn">IX</span
+              ><span
+                >The Kernel Must Be Small
+                <span class="tag">keystone</span></span
+              >
+            </h3>
+            <p>
+              This is the constraint that governs all the others: mechanism
+              belongs in the kernel, policy in userspace. A small kernel is the
+              precondition for a large ecosystem &mdash; the less the foundation
+              mandates, the more can be built on it without permission.
+            </p>
+            <p>
+              The kernel owns only what can&rsquo;t be safely delegated:
+              execution, identity, authority, communication, and auditing &mdash;
+              with durability inside auditing, since a record that does not
+              persist is not a record. That is the whole list. Intent taxonomy is
+              userspace. Memory is userspace, a projection over the durable
+              record. The kernel provides the mechanisms these are built on
+              without becoming them. Keeping it small is the design goal, not a
+              constraint to be worked around.
+            </p>
+          </article>
+        </section>
+
+        <hr class="rule" />
+
+        <section id="boundary">
+          <h2>Part II: The Boundary</h2>
+          <p class="lead">
+            The contract. These hold even if you reject the worldview above; they
+            are what makes this a standard rather than a position paper, written
+            for anyone concerned about lock-in.
+          </p>
+
+          <p class="clause">
+            <span class="term"
+              >The standard is the boundary, not the build.</span
+            >
+            A standard is an interface others target, not a codebase you install.
+            Many implementations have to be able to sit behind one contract
+            (large and small, open and proprietary), and an agent built against
+            the boundary should not need to know which one it runs on. The line is
+            defined where agents meet the runtime; what implements it is yours to
+            choose, build, or buy. If conforming requires adopting one specific
+            program, it is not a standard.
+          </p>
+
+          <p class="clause">
+            <span class="term">Userspace does not break.</span> The interface
+            beneath agents is stable, versioned, and backward-compatible. Work
+            built against it keeps working as the implementation underneath
+            changes. The commitment is that you can build against the boundary for
+            years without it shifting beneath you &mdash; backward compatibility
+            is a property of the contract, not a best effort.
+          </p>
+
+          <p class="clause">
+            <span class="term">State is portable; exit is guaranteed.</span>
+            Principals, intents, memory, and audit are expressible in open formats
+            and exportable in full, including away from any single provider of the
+            foundation itself. Portability is a property of the boundary from the
+            first day, not a concession negotiated later. Everything that is yours
+            can be taken with you.
+          </p>
+
+          <p class="clause">
+            <span class="term">Accountability is non-transferable.</span> Every
+            action is attributable to a principal who answers for it. Autonomy
+            delegates execution, never responsibility. &ldquo;The agent did
+            it&rdquo; is not a defense. The grant of authority and the assignment
+            of answerability are the same act and can&rsquo;t be separated &mdash;
+            there is always an identifiable principal, and the system always
+            records which one.
+          </p>
+        </section>
+
+        <hr class="rule" />
+
+        <section id="becomes-real">
+          <h2>Part III: How This Becomes Real</h2>
+          <p>
+            A standard is only credible if it commits to things it can be measured
+            against. These are the commitments.
+          </p>
+
+          <p class="clause">
+            <span class="term">Governance is vendor-neutral.</span> No single
+            party owns the boundary or sets its direction. It advances by rough
+            consensus and running code, validated against a shared conformance
+            suite any implementation can be tested against, rather than by decree.
+            Conformance is something anyone can verify.
+          </p>
+
+          <p class="clause">
+            <span class="term">Adoption is additive.</span> The path from current
+            prompt-and-session tools runs forward, not through a rewrite. You put
+            the layer under what you already run, and what you already run keeps
+            working. Nothing has to be thrown out to adopt it.
+          </p>
+
+          <p class="clause">
+            <span class="term"
+              >&ldquo;Build for decades&rdquo; reduces to falsifiable
+              constraints.</span
+            >
+            The claim is not faith; it is three things you can hold the project
+            to: a versioned, backward-compatible contract; no dependence on any
+            single model or vendor, the foundation&rsquo;s own included; and
+            durable state in open, exportable formats. A foundation succeeds when
+            it becomes unremarkable enough to ignore &mdash; when the work above
+            it assumes it is there and stops thinking about it.
+          </p>
+
+          <p>
+            The pattern is not new. Operating systems made software portable
+            across machines; processes made computation governable; files made
+            data durable; permissions made multi-user systems possible. An agent
+            kernel is the next step: making autonomous work portable across
+            models, organizations, and time, and governable by the principals it
+            serves. The need is not more capable sessions; it is durable runtime
+            semantics for autonomous work.
+          </p>
+
+          <p class="kicker">
+            The goal is not to make agents seem alive. It is to make them safe to
+            run.
+          </p>
+        </section>
+      </main>
+
+      <footer>
+        <span>autonomykernel.org</span>
+        <nav><a href="primitives.html">Core primitives &rarr;</a></nav>
+      </footer>
+    </div>
+  </body>
+</html>
