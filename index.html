@@ -456,6 +456,35 @@
         color: var(--ink);
       }
 
+      /* ---------- Next page ---------- */
+      .next {
+        margin: clamp(2.6rem, 6vw, 4rem) 0 0;
+        padding-top: clamp(2rem, 5vw, 2.8rem);
+        border-top: 1px solid var(--hair);
+      }
+      .next a {
+        font-family: var(--display);
+        font-weight: 500;
+        font-size: clamp(1.2rem, 1rem + 0.8vw, 1.55rem);
+        letter-spacing: -0.015em;
+        text-decoration: none;
+        color: var(--accent);
+      }
+      .next a:hover {
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+      }
+      .next .label {
+        display: block;
+        font-family: var(--body);
+        font-weight: 400;
+        font-size: 0.74rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 0.45rem;
+      }
+
       /* ---------- Footer ---------- */
       footer {
         margin-top: clamp(3rem, 8vw, 5.5rem);
@@ -1173,13 +1202,17 @@
         <blockquote class="envoi">
           The model is what thinks. The kernel is what endures.
         </blockquote>
+
+        <nav class="next">
+          <span class="label">Read next</span>
+          <a href="primitives.html">Core Primitives →</a>
+        </nav>
       </main>
 
       <footer>
         <span>autonomykernel.org · Vlad Palos · May 2026</span>
         <nav>
           <a href="https://github.com/offbeatport/autonomykernel">GitHub</a>
-          <a href="primitives.html">Core primitives →</a>
         </nav>
       </footer>
     </div>
