@@ -251,6 +251,20 @@
       .row:last-child {
         border-bottom: 1px solid var(--hair);
       }
+      a.row {
+        text-decoration: none;
+        color: inherit;
+        transition:
+          background-color 0.15s ease,
+          padding-left 0.15s ease;
+      }
+      a.row:hover {
+        background: var(--tint);
+        padding-left: 0.5rem;
+      }
+      a.row:hover .pr {
+        color: var(--accent);
+      }
       .rn {
         grid-row: span 2;
         font-family: var(--display);
@@ -321,6 +335,91 @@
       }
       .tag::after {
         content: "]";
+      }
+
+      /* ---------- Spaces ---------- */
+      .spaces {
+        margin: 2rem 0 0;
+        display: grid;
+        gap: 1px;
+        background: var(--hair);
+        border-block: 1px solid var(--hair);
+      }
+      .space {
+        background: var(--bg);
+        padding: 1.1rem 0;
+        display: grid;
+        gap: 0.3rem 1.2rem;
+      }
+      @media (min-width: 40rem) {
+        .space {
+          grid-template-columns: 11rem 1fr;
+          align-items: baseline;
+          padding: 1.2rem 0;
+        }
+      }
+      .space .sp {
+        font-family: var(--display);
+        font-weight: 500;
+        letter-spacing: -0.01em;
+      }
+      .space .sp .who {
+        display: block;
+        font-family: var(--body);
+        font-weight: 400;
+        font-size: 0.78rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-top: 0.2rem;
+      }
+      .space .sd {
+        color: var(--muted);
+        font-size: 0.95em;
+      }
+      .space .sd .eg {
+        display: block;
+        margin-top: 0.35rem;
+        font-size: 0.92em;
+      }
+      .space .sd .eg b {
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      /* ---------- Execution rule ---------- */
+      .rule-steps {
+        font-family: var(--display);
+        font-weight: 300;
+        font-size: clamp(1.6rem, 1.1rem + 2.1vw, 2.5rem);
+        line-height: 1.28;
+        letter-spacing: -0.02em;
+        margin: 0;
+      }
+      .rule-steps p {
+        margin: 0.05em 0;
+        max-width: none;
+      }
+      .rule-steps b {
+        font-weight: 500;
+        color: var(--accent);
+      }
+      .rule-steps .space {
+        font-family: var(--body);
+        font-weight: 400;
+        font-size: 0.42em;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        vertical-align: 0.32em;
+        margin-left: 0.6em;
+      }
+      .converge {
+        font-style: italic;
+        color: var(--muted);
+        font-size: 0.92em;
+        max-width: 60ch;
+        margin: 1.8rem 0 0;
       }
 
       /* ---------- Clauses (Part II / III) ---------- */
@@ -510,75 +609,75 @@
         <section id="principles">
           <h2>The Principles</h2>
           <div class="ledger">
-            <div class="row">
+            <a class="row" href="#p1">
               <span class="rn">I</span
               ><span class="pr">Agents are processes</span
               ><span class="gl"
                 >named, observed, accountable units of work</span
               >
-            </div>
-            <div class="row">
+            </a>
+            <a class="row" href="#p2">
               <span class="rn">II</span
               ><span class="pr">Agents are disposable</span
               ><span class="gl"
                 >continuity belongs to the system, not the instance</span
               >
-            </div>
-            <div class="row">
+            </a>
+            <a class="row" href="#p3">
               <span class="rn">III</span
               ><span class="pr">Models are replaceable</span
               ><span class="gl">and so is the kernel’s own implementation</span>
-            </div>
-            <div class="row">
+            </a>
+            <a class="row" href="#p4">
               <span class="rn">IV</span
               ><span class="pr">Intent must be traceable</span
               ><span class="gl"
                 >every action links to an authorizing reason</span
               >
-            </div>
-            <div class="row">
+            </a>
+            <a class="row" href="#p5">
               <span class="rn">V</span
               ><span class="pr">Authority must be explicit</span
               ><span class="gl">granted and scoped; the default is deny</span>
-            </div>
-            <div class="row">
+            </a>
+            <a class="row" href="#p6">
               <span class="rn">VI</span
               ><span class="pr">Everything must be auditable</span
               ><span class="gl"
                 >an unlogged action is treated as not having happened</span
               >
-            </div>
-            <div class="row">
+            </a>
+            <a class="row" href="#p7">
               <span class="rn">VII</span
               ><span class="pr">The principal is sovereign</span
               ><span class="gl"
                 >the root of all authority; every grant is revocable</span
               >
-            </div>
-            <div class="row">
+            </a>
+            <a class="row" href="#p8">
               <span class="rn">VIII</span
               ><span class="pr">Memory is governed</span
               ><span class="gl"
                 >the record is immutable; memory is curated, erasable</span
               >
-            </div>
-            <div class="row">
+            </a>
+            <a class="row" href="#p9">
               <span class="rn">IX</span
               ><span class="pr">The kernel must be small</span
               ><span class="gl"
                 >mechanism in the kernel, policy in userspace</span
               >
-            </div>
-            <div class="row">
+            </a>
+            <a class="row" href="#p10">
               <span class="rn">X</span
               ><span class="pr">The standard is the boundary</span
               ><span class="gl">many implementations, one stable contract</span>
-            </div>
-            <div class="row">
+            </a>
+            <a class="row" href="#p11">
               <span class="rn">XI</span
               ><span class="pr">Accountability is non-transferable</span
               ><span class="gl">a principal always answers for the action</span>
-            </div>
+            </a>
           </div>
         </section>
 
@@ -628,6 +727,92 @@
 
         <hr class="rule" />
 
+        <section id="spaces">
+          <h2>Three Spaces</h2>
+          <p class="lead">
+            An operating system draws one line, between user space and kernel
+            space. Autonomous work needs two, because the thing requesting the
+            work is neither the user nor the kernel.
+          </p>
+          <p>
+            In a classic OS, user-space code is written by someone who is trusted
+            and does what it says. An agent is neither: it reasons
+            probabilistically, it can be steered by a hostile input, and it can
+            argue itself out of its own constraints. Treating it as ordinary
+            user-space code is the mistake most agent tooling makes. So the
+            principal and the agent get separate spaces, and the agent holds no
+            authority of its own.
+          </p>
+          <div class="spaces">
+            <div class="space">
+              <span class="sp"
+                >User space <span class="who">the principal</span></span
+              ><span class="sd"
+                >The human or owner who answers for the work, and the policies,
+                intents, memory, and apps they set. The source of all authority.
+                <span class="eg"
+                  ><b>e.g.</b> you grant a support bot the standing intent
+                  &ldquo;resolve refunds under $500&rdquo; and a policy requiring
+                  approval above that.</span
+                ></span
+              >
+            </div>
+            <div class="space">
+              <span class="sp"
+                >Agent space <span class="who">untrusted</span></span
+              ><span class="sd"
+                >Where agents reason, plan, and <em>propose</em> actions. They
+                hold no authority directly; every request must pass the kernel.
+                This is the space the stop button must always reach into.
+                <span class="eg"
+                  ><b>e.g.</b> the bot decides to email a customer and issue a
+                  $400 refund, and asks the kernel to do it.</span
+                ></span
+              >
+            </div>
+            <div class="space">
+              <span class="sp"
+                >Kernel space <span class="who">mechanism</span></span
+              ><span class="sd"
+                >Identity, authority, the syscall gate, and the audit record. It
+                validates each proposed action against the grant, executes it, and
+                logs it.
+                <span class="eg"
+                  ><b>e.g.</b> the kernel checks the lease, sees $400 is under the
+                  limit, sends the email, and records who authorized it and
+                  why.</span
+                ></span
+              >
+            </div>
+          </div>
+        </section>
+
+        <hr class="rule" />
+
+        <section id="execution-rule">
+          <h2>The Execution Rule</h2>
+          <p class="lead">Four moves, always in this order.</p>
+          <div class="rule-steps">
+            <p><b>Agents</b> propose.<span class="space">agent space</span></p>
+            <p>
+              <b>Kernel</b> authorizes.<span class="space">kernel space</span>
+            </p>
+            <p>
+              <b>Syscalls</b> execute.<span class="space">kernel space</span>
+            </p>
+            <p>
+              <b>Audit log</b> remembers.<span class="space">kernel space</span>
+            </p>
+          </div>
+          <p class="converge">
+            Agents reason in agent space and hold no authority of their own; the
+            kernel authorizes, executes, and records in kernel space; and every
+            grant traces back to a principal in user space who answers for it.
+          </p>
+        </section>
+
+        <hr class="rule" />
+
         <section id="worldview">
           <h2>Part I: The Worldview</h2>
           <p class="lead">
@@ -635,7 +820,7 @@
             the design treats as non-negotiable. Each is labeled.
           </p>
 
-          <article class="tenet">
+          <article class="tenet" id="p1">
             <h3>
               <span class="rn">I</span
               ><span
@@ -661,7 +846,7 @@
             </p>
           </article>
 
-          <article class="tenet">
+          <article class="tenet" id="p2">
             <h3>
               <span class="rn">II</span
               ><span
@@ -685,7 +870,7 @@
             </p>
           </article>
 
-          <article class="tenet">
+          <article class="tenet" id="p3">
             <h3>
               <span class="rn">III</span
               ><span
@@ -712,7 +897,7 @@
             </p>
           </article>
 
-          <article class="tenet">
+          <article class="tenet" id="p4">
             <h3>
               <span class="rn">IV</span
               ><span
@@ -740,7 +925,7 @@
             </p>
           </article>
 
-          <article class="tenet">
+          <article class="tenet" id="p5">
             <h3>
               <span class="rn">V</span
               ><span
@@ -770,7 +955,7 @@
             </p>
           </article>
 
-          <article class="tenet">
+          <article class="tenet" id="p6">
             <h3>
               <span class="rn">VI</span
               ><span
@@ -794,7 +979,7 @@
             </p>
           </article>
 
-          <article class="tenet">
+          <article class="tenet" id="p7">
             <h3>
               <span class="rn">VII</span
               ><span
@@ -822,7 +1007,7 @@
             </p>
           </article>
 
-          <article class="tenet">
+          <article class="tenet" id="p8">
             <h3>
               <span class="rn">VIII</span
               ><span
@@ -849,7 +1034,7 @@
             </p>
           </article>
 
-          <article class="tenet">
+          <article class="tenet" id="p9">
             <h3>
               <span class="rn">IX</span
               ><span
@@ -887,7 +1072,7 @@
             about lock-in.
           </p>
 
-          <p class="clause">
+          <p class="clause" id="p10">
             <span class="term"
               >The standard is the boundary, not the build.</span
             >
@@ -918,7 +1103,7 @@
             Everything that is yours can be taken with you.
           </p>
 
-          <p class="clause">
+          <p class="clause" id="p11">
             <span class="term">Accountability is non-transferable.</span> Every
             action is attributable to a principal who answers for it. Autonomy
             delegates execution, never responsibility. “The agent did it” is not

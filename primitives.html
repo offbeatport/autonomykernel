@@ -322,6 +322,16 @@
         font-weight: 500;
         color: var(--accent);
       }
+      .rule-steps .space {
+        font-family: var(--body);
+        font-weight: 400;
+        font-size: 0.42em;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        vertical-align: 0.32em;
+        margin-left: 0.6em;
+      }
 
       /* ---------- Footer ---------- */
       footer {
@@ -399,6 +409,30 @@
       <hr class="rule" />
 
       <main>
+        <section id="execution-rule">
+          <h2>The Execution Rule</h2>
+          <p class="lead">Four moves, always in this order.</p>
+          <div class="rule-steps">
+            <p><b>Agents</b> propose.<span class="space">agent space</span></p>
+            <p>
+              <b>Kernel</b> authorizes.<span class="space">kernel space</span>
+            </p>
+            <p>
+              <b>Syscalls</b> execute.<span class="space">kernel space</span>
+            </p>
+            <p>
+              <b>Audit log</b> remembers.<span class="space">kernel space</span>
+            </p>
+          </div>
+          <p class="converge">
+            Agents reason in agent space and hold no authority of their own; the
+            kernel authorizes, executes, and records in kernel space; and every
+            grant traces back to a principal in user space who answers for it.
+          </p>
+        </section>
+
+        <hr class="rule" />
+
         <section id="primitives">
           <h2>The Primitives</h2>
           <p class="lead">
@@ -642,18 +676,6 @@
           </p>
         </section>
 
-        <hr class="rule" />
-
-        <section id="execution-rule">
-          <h2>The Execution Rule</h2>
-          <p class="lead">Four moves, always in this order.</p>
-          <div class="rule-steps">
-            <p><b>Agents</b> propose.</p>
-            <p><b>Kernel</b> authorizes.</p>
-            <p><b>Syscalls</b> execute.</p>
-            <p><b>Audit log</b> remembers.</p>
-          </div>
-        </section>
       </main>
 
       <footer>

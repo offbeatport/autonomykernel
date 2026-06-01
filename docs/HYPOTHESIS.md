@@ -46,6 +46,22 @@ This document has two parts, and it keeps them separate. Part I is a worldview: 
 
 ---
 
+## Three Spaces
+
+An operating system draws one line, between user space and kernel space. Autonomous work needs two, because the thing requesting the work is neither the user nor the kernel.
+
+In a classic OS, user-space code is written by someone who is trusted and does what it says. An agent is neither: it reasons probabilistically, it can be steered by a hostile input, and it can argue itself out of its own constraints. Treating it as ordinary user-space code is the mistake most agent tooling makes. So the principal and the agent get separate spaces, and the agent holds no authority of its own.
+
+| Space | Who | What lives there | Example |
+| :-- | :-- | :-- | :-- |
+| **User space** | the principal | The human or owner who answers for the work, and the policies, intents, memory, and apps they set. The source of all authority. | You grant a support bot the standing intent "resolve refunds under $500" and a policy requiring approval above that. |
+| **Agent space** | untrusted | Where agents reason, plan, and _propose_ actions. They hold no authority directly; every request must pass the kernel. This is the space the stop button must always reach into. | The bot decides to email a customer and issue a $400 refund, and asks the kernel to do it. |
+| **Kernel space** | mechanism | Identity, authority, the syscall gate, and the audit record. It validates each proposed action against the grant, executes it, and logs it. | The kernel checks the lease, sees $400 is under the limit, sends the email, and records who authorized it and why. |
+
+The three spaces are why the execution rule reads the way it does: agents (agent space) propose, the kernel (kernel space) authorizes and executes, and every grant traces back to a principal (user space) who answers for it.
+
+---
+
 ## Part I: The Worldview
 
 _Nine claims. Some are positions you may reject; some are invariants the design treats as non-negotiable. Each is labeled._
