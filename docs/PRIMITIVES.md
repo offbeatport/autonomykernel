@@ -31,7 +31,7 @@ Everything the kernel governs is one of these, or built from them.
 | **Syscall** | Controlled boundary between agent space and kernel space. Agents request actions; the kernel validates and executes. | `email.send(to, body)`, checked then executed |
 | **Event** | Immutable fact that something happened. Events drive the system. | `approval.granted`, `process.checkpointed` |
 | **Message** | Communication between users, agents, processes, plugins, or the kernel. | agent to human: "Need sign-off on refund #8821" |
-| **Memory** | Persistent knowledge and experience. Should be pluggable, but referenced by kernel objects. | "This customer prefers email over phone" |
+| **Memory** | Persistent knowledge and experience: a curated, pluggable projection of the audit record, referenced by kernel objects. | "This customer prefers email over phone" |
 | **Provenance** | Lineage of data, memory, decisions, and actions. Answers: _where did this come from?_ | figure pulled from the Q3 export by process `p-7742` |
 | **Version** | Immutable revision of an object, policy, prompt, plugin, memory, or agent definition. Required for replay. | `policy@v4`, `prompt@v12`, pinned for replay |
 | **Audit Log** | Append-only record of all state transitions, decisions, permissions, syscalls, actions, approvals, and memory mutations. | `principal=vlad action=email.send result=allowed` |
@@ -63,10 +63,12 @@ Both chains start at the principal and narrow, step by step, until they meet at 
 
 Four moves, always in this order.
 
-1. **Agents** propose.
-2. **Kernel** authorizes.
-3. **Syscalls** execute.
-4. **Audit log** remembers.
+1. **Agents** propose. _(agent space)_
+2. **Kernel** authorizes. _(kernel space)_
+3. **Syscalls** execute. _(kernel space)_
+4. **Audit Log** remembers. _(kernel space)_
+
+Agents reason in agent space and hold no authority of their own; the kernel authorizes, executes, and records in kernel space; and every grant traces back to a principal in user space who answers for it.
 
 ---
 

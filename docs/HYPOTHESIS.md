@@ -12,7 +12,7 @@ _A proposed standard and a call for collaborators. There is no kernel yet; this 
 
 Autonomous agents today are created by a prompt and discarded at the end of the session. But we increasingly ask them to hold real authority and act on our behalf for days rather than seconds, and there is no shared layer underneath them that governs what an agent may do, records what it did, retains what it learned, and can stop it on demand. An autonomy kernel would be that layer: a runtime beneath the agents and the models they reason with. Agents are disposable and models are replaceable; the layer beneath them should be neither.
 
-Underneath that runtime is one organizing idea: authority has a single root, the principal. Every agent, every action, every grant of power traces back to a principal who authorized it and answers for it. Purpose descends one chain (principal to intent, goal, task, process, action) and power descends another (principal to policy, capability, lease, syscall), and the two meet at a single gate before any action runs. That authority model is the part most agent tooling skips, and it is the core of what this proposes.
+Underneath that runtime is one organizing idea: authority has a single root, the principal. Every agent, every action, every grant of power traces back to a principal who authorized it and answers for it. Purpose descends one chain (principal to intent, goal, task, process, action) and power descends another (principal through policy, capability, and lease, down to the syscall), and the two meet at a single gate before any action runs. That authority model is the part most agent tooling skips, and it is the core of what this proposes.
 
 ## The Principles
 
@@ -26,7 +26,7 @@ Underneath that runtime is one organizing idea: authority has a single root, the
 | VI   | **Everything must be auditable**       | an unlogged action is treated as not having happened |
 | VII  | **The principal is sovereign**         | the root of all authority; every grant is revocable  |
 | VIII | **Memory is governed**                 | the record is immutable; memory is curated, erasable |
-| IX   | **The kernel must be small**           | mechanism in the kernel, policy in userspace         |
+| IX   | **The kernel must be small**           | mechanism in the kernel, policy in user space        |
 | X    | **The standard is the boundary**       | many implementations, one stable contract            |
 | XI   | **Accountability is non-transferable** | a principal always answers for the action            |
 
@@ -40,7 +40,7 @@ Autonomous agents are at a similar point. Agents sit above, models below, and be
 
 Three layers, then: the agent is a process; the model is the reasoning engine inside it; the kernel is the runtime beneath both. The model is the most capable layer and the least permanent. The kernel changes slowly. The ordering here is by endurance rather than importance: what reasons gets replaced, what governs persists.
 
-This layer sits beneath existing tools rather than replacing them. Frameworks, assistants, workflow tools, and the models themselves are userspace, where the work happens. The kernel's role is to be the part none of them has to reimplement and the part none of them can quietly break. Today's tools would be the first things to run on it.
+This layer sits beneath existing tools rather than replacing them. Frameworks, assistants, workflow tools, and the models themselves are user space, where the work happens. The kernel's role is to be the part none of them has to reimplement and the part none of them can quietly break. Today's tools would be the first things to run on it.
 
 This document has two parts, and it keeps them separate. Part I is a worldview: an opinionated account of what autonomous systems are and how they should behave, which you can accept or argue with. Part II is a boundary: a contract you can build against even if you reject the worldview entirely. A standard requires agreement about interfaces, not about meaning.
 
@@ -56,9 +56,20 @@ In a classic OS, user-space code is written by someone who is trusted and does w
 | :-- | :-- | :-- | :-- |
 | **User space** | the principal | The human or owner who answers for the work, and the policies, intents, memory, and apps they set. The source of all authority. | You grant a support bot the standing intent "resolve refunds under $500" and a policy requiring approval above that. |
 | **Agent space** | untrusted | Where agents reason, plan, and _propose_ actions. They hold no authority directly; every request must pass the kernel. This is the space the stop button must always reach into. | The bot decides to email a customer and issue a $400 refund, and asks the kernel to do it. |
-| **Kernel space** | mechanism | Identity, authority, the syscall gate, and the audit record. It validates each proposed action against the grant, executes it, and logs it. | The kernel checks the lease, sees $400 is under the limit, sends the email, and records who authorized it and why. |
+| **Kernel space** | mechanism | Identity, authority, communication, the syscall gate, and the audit record. It validates each proposed action against the grant, executes it, and logs it; messages between principals and agents pass through here so they can be authenticated and recorded. | The kernel checks the lease, sees $400 is under the limit, sends the email, and records who authorized it and why. |
 
-The three spaces are why the execution rule reads the way it does: agents (agent space) propose, the kernel (kernel space) authorizes and executes, and every grant traces back to a principal (user space) who answers for it.
+---
+
+## The Execution Rule
+
+Four moves, always in this order.
+
+1. **Agents** propose. _(agent space)_
+2. **Kernel** authorizes. _(kernel space)_
+3. **Syscalls** execute. _(kernel space)_
+4. **Audit Log** remembers. _(kernel space)_
+
+Agents reason in agent space and hold no authority of their own; the kernel authorizes, executes, and records in kernel space; and every grant traces back to a principal in user space who answers for it.
 
 ---
 
@@ -88,7 +99,7 @@ The same logic applies one layer down. It is not enough for models to be replace
 
 Every action must trace to an authorizing principal and a reason it was permitted. The requirement is not that intent be elaborate, only that it be present and followable. An action with no recoverable reason is a defect regardless of its result; as execution gets cheaper, unaccountable automation mostly produces volume.
 
-The kernel's responsibility here is lineage: an unbroken link from an action back to who authorized it and why, enforced where execution, identity, and auditing meet. The kernel does not own the meaning. One reference decomposition, _Principal → Intent → Goal → Task → Process → Action_, is a useful map of the path from reason to deed, and only one of several possible. How richly intent is modeled is a userspace concern; that it is traceable at all is not.
+The kernel's responsibility here is lineage: an unbroken link from an action back to who authorized it and why, enforced where execution, identity, and auditing meet. The kernel does not own the meaning. One reference decomposition, _Principal → Intent → Goal → Task → Process → Action_, is a useful map of the path from reason to deed, and only one of several possible. How richly intent is modeled is a user space concern; that it is traceable at all is not.
 
 ### V. Authority Must Be Explicit _[invariant]_
 
@@ -116,9 +127,9 @@ Memory is built on the durable record (VI) rather than maintained as a second st
 
 ### IX. The Kernel Must Be Small _[keystone]_
 
-This is the constraint that governs all the others: mechanism belongs in the kernel, policy in userspace. A small kernel is the precondition for a large ecosystem: the less the foundation mandates, the more can be built on it without permission.
+This is the constraint that governs all the others: mechanism belongs in the kernel, policy in user space. A small kernel is the precondition for a large ecosystem: the less the foundation mandates, the more can be built on it without permission.
 
-The kernel owns only what can't be safely delegated: execution, identity, authority, communication, and auditing (durability lives inside auditing, since a record that does not persist is useless). That is the whole list. Intent taxonomy is userspace. Memory is userspace, a projection over the durable record. The kernel provides the mechanisms these are built on without becoming them. Smallness here is the design goal, something to protect rather than a limitation to work around.
+The kernel owns only what can't be safely delegated: execution, identity, authority, communication, and auditing (durability lives inside auditing, since a record that does not persist is useless). That is the whole list. Intent taxonomy is user space. Memory is user space, a projection over the durable record. The kernel provides the mechanisms these are built on without becoming them. Smallness here is the design goal, something to protect rather than a limitation to work around.
 
 ---
 
@@ -128,7 +139,7 @@ _The contract. These hold even if you reject the worldview above; once it exists
 
 **The standard is the boundary, not the build.** A standard is an interface others target; the codebase that implements it stays swappable. Many implementations have to sit behind one contract (large and small, open and proprietary), and an agent built against the boundary should not need to know which one it runs on. The line is defined where agents meet the runtime; what implements it is yours to choose, build, or buy. If only one specific program can satisfy it, it is a product, not a standard.
 
-**Userspace does not break.** The interface beneath agents is stable, versioned, and backward-compatible. Work built against it keeps working as the implementation underneath changes. You should be able to build against the boundary for years without it shifting beneath you, because backward compatibility is written into the contract rather than offered as a best effort.
+**User space does not break.** The interface beneath agents is stable, versioned, and backward-compatible. Work built against it keeps working as the implementation underneath changes. You should be able to build against the boundary for years without it shifting beneath you, because backward compatibility is written into the contract rather than offered as a best effort.
 
 **State is portable; exit is guaranteed.** Principals, intents, memory, and audit are expressible in open formats and exportable in full, including away from any single provider of the foundation itself. Portability is a property of the boundary from the first day, not a concession negotiated later. Everything that is yours can be taken with you.
 
@@ -136,7 +147,7 @@ _The contract. These hold even if you reject the worldview above; once it exists
 
 ---
 
-## Part III: How This Becomes Real
+## How This Becomes Real
 
 A standard is only credible if it commits to things it can be measured against. These are the commitments.
 

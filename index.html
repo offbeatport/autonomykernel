@@ -597,9 +597,9 @@
             single root, the principal. Every agent, every action, every grant
             of power traces back to a principal who authorized it and answers
             for it. Purpose descends one chain (principal to intent, goal, task,
-            process, action) and power descends another (principal to policy,
-            capability, lease, syscall), and the two meet at a single gate
-            before any action runs. That authority model is the part most agent
+            process, action) and power descends another (principal through
+            policy, capability, and lease, down to the syscall), and the two
+            meet at a single gate before any action runs. That authority model is the part most agent
             tooling skips, and it is the core of what this proposes.
           </p>
         </section>
@@ -665,7 +665,7 @@
               <span class="rn">IX</span
               ><span class="pr">The kernel must be small</span
               ><span class="gl"
-                >mechanism in the kernel, policy in userspace</span
+                >mechanism in the kernel, policy in user space</span
               >
             </a>
             <a class="row" href="#p10">
@@ -710,7 +710,7 @@
           <p>
             This layer sits beneath existing tools rather than replacing them.
             Frameworks, assistants, workflow tools, and the models themselves
-            are userspace, where the work happens. The kernel’s role is to be
+            are user space, where the work happens. The kernel’s role is to be
             the part none of them has to reimplement and the part none of them
             can quietly break. Today’s tools would be the first things to run on
             it.
@@ -774,9 +774,11 @@
               <span class="sp"
                 >Kernel space <span class="who">mechanism</span></span
               ><span class="sd"
-                >Identity, authority, the syscall gate, and the audit record. It
-                validates each proposed action against the grant, executes it, and
-                logs it.
+                >Identity, authority, communication, the syscall gate, and the
+                audit record. It validates each proposed action against the
+                grant, executes it, and logs it; messages between principals and
+                agents pass through here so they can be authenticated and
+                recorded.
                 <span class="eg"
                   ><b>e.g.</b> the kernel checks the lease, sees $400 is under the
                   limit, sends the email, and records who authorized it and
@@ -801,7 +803,7 @@
               <b>Syscalls</b> execute.<span class="space">kernel space</span>
             </p>
             <p>
-              <b>Audit log</b> remembers.<span class="space">kernel space</span>
+              <b>Audit Log</b> remembers.<span class="space">kernel space</span>
             </p>
           </div>
           <p class="converge">
@@ -920,7 +922,7 @@
               does not own the meaning. One reference decomposition,
               <em>Principal → Intent → Goal → Task → Process → Action</em>, is a
               useful map of the path from reason to deed, and only one of
-              several possible. How richly intent is modeled is a userspace
+              several possible. How richly intent is modeled is a user space
               concern; <em>that</em> it is traceable at all is not.
             </p>
           </article>
@@ -1044,7 +1046,7 @@
             </h3>
             <p>
               This is the constraint that governs all the others: mechanism
-              belongs in the kernel, policy in userspace. A small kernel is the
+              belongs in the kernel, policy in user space. A small kernel is the
               precondition for a large ecosystem: the less the foundation
               mandates, the more can be built on it without permission.
             </p>
@@ -1052,8 +1054,8 @@
               The kernel owns only what can’t be safely delegated: execution,
               identity, authority, communication, and auditing (durability lives
               inside auditing, since a record that does not persist is useless).
-              That is the whole list. Intent taxonomy is userspace. Memory is
-              userspace, a projection over the durable record. The kernel
+              That is the whole list. Intent taxonomy is user space. Memory is
+              user space, a projection over the durable record. The kernel
               provides the mechanisms these are built on without becoming them.
               Smallness here is the design goal, something to protect rather
               than a limitation to work around.
@@ -1086,7 +1088,7 @@
           </p>
 
           <p class="clause">
-            <span class="term">Userspace does not break.</span> The interface
+            <span class="term">User space does not break.</span> The interface
             beneath agents is stable, versioned, and backward-compatible. Work
             built against it keeps working as the implementation underneath
             changes. You should be able to build against the boundary for years
@@ -1117,7 +1119,7 @@
         <hr class="rule" />
 
         <section id="becomes-real">
-          <h2>Part III: How This Becomes Real</h2>
+          <h2>How This Becomes Real</h2>
           <p>
             A standard is only credible if it commits to things it can be
             measured against. These are the commitments.
@@ -1155,7 +1157,7 @@
           <p>
             The pattern is not new. Operating systems made software portable
             across machines; processes made computation governable; files made
-            data durable; permissions made multi-user systems possible. An agent
+            data durable; permissions made multi-user systems possible. An autonomy
             kernel is the next step: making autonomous work portable across
             models, organizations, and time, and governable by the principals it
             serves. The need is not more capable sessions; it is durable runtime
