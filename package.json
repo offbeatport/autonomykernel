@@ -1,0 +1,20 @@
+{
+  "name": "autonomy-kernel",
+  "version": "0.1.0",
+  "description": "Reference implementation and conformance suite for the Autonomy Kernel contract: the boundary where an agent's proposed action is authorized, executed, and recorded.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "homepage": "https://autonomykernel.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/offbeatport/autonomykernel"
+  },
+  "scripts": {
+    "demo": "node reference/demo.ts",
+    "test": "node --test conformance/suite.ts"
+  },
+  "engines": {
+    "node": ">=22.6.0"
+  },
+  "packageManager": "pnpm@10.30.3+sha256.ff0a72140f6a6d66c0b284f6c9560aff605518e28c29aeac25fb262b74331588"
+}
