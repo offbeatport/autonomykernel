@@ -1,4 +1,7 @@
-# Autonomy Kernel
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/logo-wordmark-dark.png">
+  <img src="assets/logo-wordmark.png" alt="Autonomy Kernel" width="380">
+</picture>
 
 **An operating system for autonomous work.** A proposed standard for the runtime layer beneath AI agents: the boundary that decides what an agent may do, executes only what is authorized, records everything, and can always be stopped.
 

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Lockup render</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: transparent;
+      }
+      body.dark {
+        background: #0d0e12;
+      }
+      .lock {
+        display: inline-flex;
+        align-items: center;
+        gap: 22px;
+        padding: 40px 48px;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 400;
+        font-size: 76px;
+        letter-spacing: -0.015em;
+        color: #24201a;
+        white-space: nowrap;
+      }
+      body.dark .lock {
+        color: #e5e3de;
+      }
+      .lock svg {
+        width: 88px;
+        height: 88px;
+        flex: none;
+      }
+      .ring {
+        fill: none;
+        stroke: #345fb2;
+        stroke-width: 2.4;
+        stroke-linecap: round;
+      }
+      .core {
+        fill: #345fb2;
+      }
+      .call {
+        fill: none;
+        stroke: #24201a;
+        stroke-width: 2.4;
+        stroke-linecap: round;
+      }
+      body.dark .ring {
+        stroke: #87b1fd;
+      }
+      body.dark .core {
+        fill: #87b1fd;
+      }
+      body.dark .call {
+        stroke: #e5e3de;
+      }
+      .dot {
+        color: #345fb2;
+      }
+      body.dark .dot {
+        color: #87b1fd;
+      }
+    </style>
+  </head>
+  <body>
+    <span class="lock" id="lock">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path class="ring" d="M22.6 7.2A11 11 0 1 0 22.6 24.8" />
+        <path class="call" d="M30 16H21.2" />
+        <circle class="core" cx="16" cy="16" r="3.6" />
+      </svg>
+      <span id="word">autonomykernel<span class="dot">.</span>org</span>
+    </span>
+    <script>
+      const p = new URLSearchParams(location.search);
+      if (p.get("theme") === "dark") document.body.classList.add("dark");
+      if (p.get("word") === "short")
+        document.getElementById("word").innerHTML =
+          'Autonomy<span class="dot"> </span>Kernel';
+      // report the exact box so the shot can be cropped tight
+      const r = document.getElementById("lock").getBoundingClientRect();
+      document.title = `${Math.ceil(r.width)}x${Math.ceil(r.height)}`;
+    </script>
+  </body>
+</html>
