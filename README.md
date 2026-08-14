@@ -31,11 +31,11 @@ The demo shows an agent proposing refunds: one admitted and executed, one denied
 ## The idea in one line
 
 ```
-agent proposes  →  kernel authorizes  →  syscall executes  →  audit log records
-  (agent space)      (kernel space)        (kernel space)       (kernel space)
+principal grants → agent proposes → kernel authorizes → syscall executes → audit log records
+  (user space)     (agent space)      (kernel space)     (kernel space)      (kernel space)
 ```
 
-The agent is untrusted and holds no authority of its own. A principal is the root of all authority. The kernel is mechanism, not policy. See [SPEC.md](SPEC.md) for the invariants and [docs/HYPOTHESIS.md](docs/HYPOTHESIS.md) for the worldview behind them.
+Authority flows one way, user space → agent space → kernel space, and never back. The principal is the root: nothing an agent proposes can exceed the grant it came from. The agent is untrusted and holds no authority of its own. The kernel is mechanism, not policy. See [SPEC.md](SPEC.md) for the invariants and [docs/HYPOTHESIS.md](docs/HYPOTHESIS.md) for the worldview behind them.
 
 ## Documents
 
